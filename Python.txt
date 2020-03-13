@@ -1,0 +1,476 @@
+SideNotes:
+  #DeepCopy: when 2 objects point at the same location, the location is known as deep copy.
+  #ShallowCopy: same copy but different memory locations.
+
+
+print():
+  print() syntax:
+    print(<var>/<msg>, ....., [end = char], [sep = char])
+  print(a, b, c, sep = '_') //By default sep is == ' ', it can be replaced by any character
+  print('Gwalior', end = '') //By default end is == '\n', if we need to avoid new line after print statement, use as shown
+  print('%d, %d, %d'%(a, b, c)) //Using conversion specifiers
+  print("{}, {}, {}".format(a, b, c)) //printing using .format() method, [{} known as specifiers]
+  print("{0}, {1}, {2}, {0}, {0}".format(a, b, c)) //can print variable multiple times using index locations
+  print("{0:d}, {1:f}, {2}, {0}".format(a, b, c)) //Used for conversions while printing [Cannot convert strings]
+  print('{0:10d}\n{1:10d}\n{2:10d}\n{3:10d}'.format(a, b, c, t)) //Right align values by nth spaces in {0:'n'd}
+  print('{0:<10d}\n{1:>10d}\n{2:^10d}\n{3:10d}'.format(a, b, c, t)) //[<: left alignment], [>: right alignment], [^: centre alignment]
+
+input():
+  input() syntax:
+    input('Enter number: ')
+  a = input('Enter number: ') //Takes input from the keyboard [always takes input in the form of string]
+  a = int(input('Enter number: ')) //int() transforms str to integer
+  a = float(input('Enter number: ')) //int() transforms str to float
+Taking Multiple Inputs in a single line:
+  eg.
+    k = input('Enter 3 no: ').split(' ')    //k will have a List
+    a ,b, c = input('Enter 3 no: ').split(' ')  //can only accept 3 values or will show error
+
+type(x): returns the type of x.
+isinstance(x, data_type): returns boolean of element x compared with datatype.
+
+if statement:
+  if (exp) :      //Single if statement
+    ===
+    ===
+  else:
+    ===
+
+  if(exp) :       //Multiple if statement
+    ===
+  elif(exp) :
+    ===
+  else:
+    ===
+
+while loop:
+--while exp:
+      break/continue
+
+range():
+--range(N1, [N2], [D]):
+--eg:k = range(1, 11) //it will return range(1, 11), not a list
+     k = list(range(1, 11)) //it will return a list fron 1 to 10
+
+for loop:
+  for <var> in <container>:
+    ====
+    [break]
+    [continue]
+
+String:
+  Strings are immutable (Not reassignable).
+  It is a predefined class which also includes its own methods(properties).
+
+Slicing:
+  Syntax:
+    [si: ei: d]   //si: Start index, ei: end index, d: step
+  Operations:
+    +: concatinate 2 Strings    //Not efficient, uses more memory
+    *: repeats the Strings
+    >,<,<=,>=,==: will compare ascii values //same as c
+  Functions:
+    x.join(str): joins x after each character of str.
+    ord('chr'): returns ascii value of chr
+    chr(num): returns
+    x.capitalize(): will convert first character into upper case(title case).
+    x.title(): will capitalize first letter of each word.
+    x.casefold(): will convert the string in lower case.
+    x.startswith('str', startIndex, endIndex): This method will return True if string starts with specied substrings.    //Case Sensitive Function
+    x.endswith(str, [si], [ei])
+    x.center(width, char): creates specified width for the string and fill the space with specified char.
+    x.ljust(width, char): same with left alignment
+    x.rjust(width, char): same with right alignment
+    x.find(str, [si], [ei]): returns the start index of specified substring. Returns -1 if substring doesn't exist.
+    x.index(str, [si], [ei]): same as find() but produces exception when substring not found.
+    x.rfind(str, [ei], [si]): search in reverse direction.
+    x.upper(): converts whole string in to upper case.
+    x.lower(): converts whole string in to lower case.
+    x.swapcase(): reverse the case of the character.
+    //All booleans from here
+    x.isalpha(): returns True if str contains alphabets only.
+    x.isupper(): check if all upper.
+    x.islower(): check if all lower.
+    x.isalnum(): returns True if characters are num or alphabets.
+    x.istitle(): check for upper first character.
+    x.isdigit(): check for digit.
+    x.isnumeric(): same as above.
+    x.isspace(): check for space.
+    x.isdecimal(): check for float.
+    x.strip([char]): removes leading and trailing spaces from a string.
+    x.lstrip([char]): removes leading spaces.
+    x.rstrip([char]): removes trailing spaces.
+    x.replace(x, y, [n]): replaces x with y in a string.    //n denotes repetition
+    x.count('str'): returns how many times str occured in the string x.
+    x.split(<char>/<substr>,[n]) : n represents no. of splits.
+    x.rsplit(<char>/<substr>,[n]): same as split but will split from right.
+    x.partition(<char>/<substr>): same as split but will include the char on which it is being splited.
+    x.zfill(n): fill zeros on the left side of the string according to the width of the whole result.
+
+Tuple:
+  It is a container which contains heterogeneous kind of data (data of any datatype)
+  Tuples are immutable. It doesnot support reassignment of its elements.
+  Declaration:
+    t = ()    or    t = tuple()
+  tuple() is a constructor.
+  Arithematic Operations: +, *
+    +: concatinate 2 tuples.
+    *: returns same tuple multiple times.
+  Logical Operators: >, <, >=, <=, ==
+    <,>,<=,>=: compares 2 tuples element by element(not by tuple length).
+  Assignment Operator: =, +=
+  ==
+  Searching in a tuple:
+    eg.
+      20 in tuple_name    //returns True if 20 is present in tuple_name
+  To declare new tuple:
+    eg.
+      t = (90,)
+  Tuple Methods:
+    t.__len__(): returns length of tuple.
+    t.count(element): returns occurence of element in the tuple t.
+    t.index(element, [si], [ei]): returns the index of the element in the tuple t. Produces error if element does not exist.
+
+  Functions (common to list and tuple):
+    max(x): returns maximum value in the container x.
+    min(x): returns minimum value in the container x.
+    sum(x): returns sum of the elements in the container x. //should not contain strings in between
+    sorted(x, [reverse = False]): sort elements of a container(by default in ascending, for descending change reverse = True).
+    any(x): returns True if any one element returns True, else False.
+    all(x): returns False if any one element returns False, else True.
+
+List:
+  Lists are mutable. Can change data at same location.
+  It is a container which also contains heterogeneous data.
+  Declaration:
+    L = []    or    L = list()
+  Arithematic Operations: +, *
+  Relational Operators: <, >, <=, >=, ==, in, not in
+  Assignment Operator: +=
+  Functions:
+    del L[0]: will delete first element of the list L. //del L[1:] also works, will remove all the elements leaving the first element
+    min(l):
+    max(l):
+    sum(l):
+    any():
+    all():
+    sorted():
+  Remove elements from tuple: convert tuple to a list, remove the element from the list and convert the list to tuple.
+  List Methods:
+    l.append(x): appends x to the end of the list.    //modifies the list at the same location in the memory
+    #L+=[44]: should be avoided as it uses more memory.
+    l.insert(index, x): appends x to a specified index. Shifts the data forward.
+    l.remove(x): removes x from the list, does not require an index position. Will show error if x not in the list.
+    l.pop([index]): removes the last element from the list by default or removes the element at the specified index. Gives error if index not found.
+    l.clear(): removes all the elements of the list.
+    l.index(x,[si],[ei]): returns the index of specified element. Gives error if element not found.
+    l.count(x): returns the occurance of element x in the List.
+    l.sort([reverse = True]): sort the list in ascending order by default.   //sorts the list at the same location, while sorted(L) returns the sorted list and is stored at a new location
+    l.reverse():  reverse the list at the same location.
+
+Dictionary:
+  Declaration:
+    D = {}    or    D = dict()
+  eg.
+    d = {key1: value1, key2: value2, key3: value3}
+  Dictionaries are mutable.
+  Used to search data using the key.
+  Can store any datatype.
+  Data reassignment:
+    D['key1'] = 'Random'
+  Append new data:
+    D['NewKey'] = 'Value'
+  No Arithematic Operations work.
+  Dictionary Functions:
+    dict.fromkeys(sequence, values): it is a static method. Used to create Dictionary in which keys are the elements
+      of the sequence and all keys have a common value specified.
+  Dictionary Methods:
+    D.copy(): used to create shallow copy of Dictionaries.
+      eg.
+        k = D.copy()    //k contains a copy of D but at different location
+    D.get(key, 'MSG'): this method return the value of specified key. If key doesnot exist, it will print specified message.
+    D.keys(): returns all the keys in the form of list.
+    D.values(): returns all the values in the form of list.
+    D.items(): return all the keys and values in a list in the form of tuple.
+    D.setdefault(key, value): this Function searches the specified key. If key exists, it will return its value, otherwise insert it.
+    D.update(dict): used to merge elements of dictionary dict in D if the keys are unique. If the key already exists in D,
+      it will overwrite the value of that key with the value specified in dict.
+    D.pop(key): removes the specified key form the dictionary.
+    D.popitem(): removes the last key value pair from the dictionary and return it in the form of tuple.
+  Parsing into a dictionary:
+    eg.
+      L = [[10,20], [40,60], [50,80]]
+      D = dict(L)
+    To parse into a dictionary, there must be a container inside a container and that container must contain 2 elements it forms a pair of key and value for the dictionary.
+    If one of the key exists twice, it will overwrite the value of the key with a later pair in the container which has the same key.
+
+Set:
+  Set is unordered data structure containing only unique elements.
+  Elements in set cannot be duplicate.
+  Elements are immutable but the set is mutable.
+  set does not support indexing and slicing.
+  Data is arranged with respect to the memory address of the element.
+  While declaring a set, if multiple same elements are entered, it does not show error , it manages the set and simply remove the duplicate elements.
+  Set cannot store other containers(eg. list, tuple, etc).
+  Every element of a set is known as key.
+  Methods:
+    x.add(element): adds the element to the set.    //supports only int, float, string
+    x.update(container or element): adds all the elements of the container to the set x.
+    x.clear(): empties the set. But the set still exists.
+    x.discard(element): removes the specified element from the list. Will not give error if the element does not exist.
+    x.remove(element): removes the specified element from the list. Will give error if the element does not exist.
+    x.union(set): merge 2 sets. Will remove duplicates.
+    x.intersection(set): returns a set with elements which exists in both the sets.
+    x.difference(set)(representation: [x - set]): removes the elements from x which are common in both x and set.
+    x.issuperset(y): returns True if all the elements of x exists in y.
+    x.issubset(y): returns True if all the elements of y exists in x.
+    x.isdisjoint(y): returns True if no common elements exist in both the sets.
+
+Function zip(containers):
+  Prepares a iterable object which contains tuples which contains elements of the containers of same index.
+  Works till the index of the smaller list.
+  A zip object cannot be used more than once as it unzips all the elements stored in it. Though zip object variable still exists but it is empty.
+  Zip object can be parsed into a list or a tuple.
+
+  Tuple Unpacking:
+    eg.
+      a, b = zip(*z)
+      It returns a tuple in a and b which contains elements at 0 and 1 index respectively of all the elements of the zip object.
+
+      k = zip(*z)
+      It returns a tuple which contains all the elements of zip object in k.
+
+Creating a Function:
+  Syntax:
+    def <function_name>(parameters):
+      return value
+Taking multiple arguments in a function:
+  Use * before the parameter object. It converts the list of arguments given in the main into a tuple.
+
+Returning multiple objects:
+  The objects can be returned in the form of tuple if we return multiple objects.
+
+Modules:
+  Modules are group of functions.
+  Method to import a module:
+    import module_name
+  Creating alias for module_name:
+    import module_name as alias_name
+  Method to import a function of a module:
+    from module_name import func_name
+  Method to import multiple functions form a module:
+    from module_name import func1, func2
+
+Lambda Expressions:
+  These are also known as anonymous functions.
+  Syntax:
+    lambda(arguments): <single line statement>
+
+Single line statements:
+  L = [i for i in range(2, 20, 2)]
+  J = x if (x>y) else y
+  J = x if (x>y and x>z) else y if(y>x and y>z) else z
+
+Map Function:
+  Syntax:
+    map(lambda...., sequence)
+  It maps all the elements of the sequence with the given function.
+  N sequences are allowed.
+
+Filter Function:
+  Syntax:
+    filter(lambda conditional expression, sequence)
+  Only includes those elements in the list which returns True for the conditional statement.
+  Only one sequence allowed.
+
+Reduce Function: (import functools required)
+  Syntax:
+    reduce(lambda args: expr, sequence)
+  Works on binary operations, so 2 parameters required in the lambda expression.
+  eg.
+    k = reduce(lambda x, y: x+y, [2,3,7,5,5])
+    In this expression, initially x and y will have 2 and 3 respectively, then will store its sum in x and y will be fetched from the next elements in the list, will add x and y again , the result again will be stored in x and next element will be stored in y and so on....
+    In the end, k will be equal to x, when there will be no elements left in the list to be stored in y.
+
+# OBJECT ORIENTED PROGRAMMING
+Class and Objects:
+  Class:
+    Classes are logical abstraction while objects have physical existence.
+    Class is a factory which is used to produce an object.
+    Syntax to define a class:
+      class <ClassName> :
+        <Data Members and Functions>
+    Specifying a Private Member:
+      Double underscore is used before the declaraton.
+      eg.
+        __(name)
+    Specifying a Protected Member:
+      Single underscore is used before the declaraton.
+      eg.
+        _(name)
+    Specifying a Public Member:
+      Normal declaration.
+  Creating an Object of a class:
+    Syntax:
+      object_name = class_name()
+  Defining a Member Function:
+    eg.
+      def funcName(self):
+      Here self references the object.
+
+  Member Functions defined inside a class are normally object member functions(not class member function)
+
+  eg.
+    s = student()
+    Here s is an object which was created with the help of student() constructor.
+  Static Members or Class variables:
+    The members which are declared inside a class are called static members.
+    Only one copy created for the entire class and is shared by all the objects of the same class.
+
+  Static Method of a class: represents the method for a class, not an object of a class.
+    Can access only static member of class.
+    Can be called using class name. 
+    Syntax:
+      @classmethod    or    @staticmethod   //at the top of the method
+      def showBankBalance(cls):     //cls used only with @classmethod, left blank for @staticmethod
+  Object as an Argument:
+    It is used to establish communication between two or more objects of same class as well as different class.
+    Using Operator Overloading:
+      
+  Constructors:
+    They are used to instantiate(Memory allocation) as well as initiate an object at the time of object declaration.
+    Constructor invoke automatically when an object is decalred.
+    Syntax:
+      def __init__(self):   //this function is itself known as a constructor
+  Deleting an Object:
+    Syntax:
+      del <object_name>
+    This will clear the existance of the object from the memory.
+  Destructor:
+    Will invoke automatically before deletion of the location of the object.
+    Syntax:
+      def __del__(self):    //this is known as a Destructor
+    
+  Inheritance:
+    Used for Genrelization and Specialization
+    Types of Inheritance:
+      Single Inheritance
+      MultiLevel Inheritance
+      Heirichal Inheritance
+      Multiple Inheritance
+      Hybrid Inheritance
+    Syntax for Derived Class:
+      class derived_class(base_class):
+    Every type of member of base class (protected, public) becomes public and protected for derived class.
+    Private Members are not Inheritable for derived class.
+
+  Abstract Class: 
+    It has no body structure.
+    It must me redifined in the derived class to achieve polymorphism.
+    Declaration:
+      from abc import ABC, abstractmethod
+      class abstractClass_name(ABC):
+      Before defining a function, function decorator '@abstractmethod' must be used.
+    Explaination:
+      When an object of the derived class is created and its function is called, it jumps to the abstract class of that derived class, creates a memory heap for that abstract function which is used by all the objects of the derived classes.
+
+Exception Handling:
+  Used to control runtime errors.
+  It is managed by following keywords:
+    try: this block captures series of errors at runtime and throw it to the except block where user can customize the error message.
+    except: 
+    raise: used in try block to raise errors.
+    finally: this block comes in action at last whether errors occur or not. This block must be defined after the last exception block.
+  Exception Classes:
+    Exception: used to control all sort of classes.
+    ValueError
+    MisMatchError
+    IndexError
+
+File Handling:
+  Methods:
+    open(): open the file in various modes.
+    write(text): store text in file.
+    writeline(text): store text in file with new line at the end.
+    read([n]): read from file.
+    readline(): read a single line from a file.
+    close(): close the file.
+    seek(no of bytes, [starting position]): for starting position, 
+      0: beginning of the file
+      1: current position
+      2: end of the file
+  Modes: 
+    w: write  //create new file if file dosen't exist and open it in write mode.
+    r: read   
+    a: append   //create new file if file dosen't exist and open it in append mode.
+    wb: write binary
+    rb: read binary
+  Syntax:
+    open(filename, mode)
+
+Threading:
+  It is used to execute more than one process simulteneously in a roundrobin fashion.
+  Importing threading module:
+    import threading
+  Syntax for implementing a thread:
+    thread_name = threading.Thread(target=function_name, [args=(parameters seperated by comma)], [name = 'thread_name'])
+  Threading Functions:
+    threading.current_thread().getName(): returns the name of the thread.
+  Thread Methods:
+    run(): used to implement the thread process.
+    start(): used to call the run method.
+    setName(): used to set name for the thread.
+    getName(): used to fetch name for the thread.
+  Instantiating a thread class:
+    class class_name(threading.Thread):
+  Deamon Threads:
+    These threads depend on the lifecycle of parent (main) thread. When the parent thread stops, the deamon thread also stops.
+    Syntax for deamon thread:
+      x = setDeamon()
+  Sync Threads:
+    Synchronizing means setting up threads in a queue. Means till one threads finishes, other thread won't start.
+    
+Python Modules:
+  datetime:
+    datetime.datetime.now(): return datetime object with complete date and time.
+    strftime(): formats the datetime object.
+      strftime formats:
+        %A: weekday
+        %d: date
+        %b: month in short form()
+        %B: month full
+        %m: month number
+        %y: year in 2 digit
+        %Y: year full
+        %H: hours(military: 24)
+        %I: civin hours
+        %M: min
+        %p: am/pm
+        %S: seconds
+
+Socket Programming:
+  Used to establish communication between two network machines.
+  For server side:
+    # Code
+    import socket   // Socket Programming Package
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)   //To set protocol for the server
+    s.bind("127.0.0.1", 1250)    //setting up ip and port for server
+    s.listen(5)   //ready to accept connection
+    networkstream, address = s.accept()   //stores IP address and buffer of the client
+    while True:
+      msg = networkstream.recv(1024)   //recieve message
+      print(msg.decode())   //decode message as it is recieved in bytes
+      smsg = input('Enter Message: ')   //Enter message to be sent to the client
+      networkstream.send(smsg.encode('utf-8'))    //send encoded message to the client buffer
+    For client side:
+      # Code
+      import socket
+      networkstream = s.connect("127.0.0.1", 1250)    //connects to server and stores its stream address in the variable
+      while True:
+        msg = input('Enter message')
+        networkstream.send(msg.encode('utf-8'))
+        smsg = ns.recieve(1024)
+        print(smsg.decode())
+        if msg == quit:
+          s.close()
+          break

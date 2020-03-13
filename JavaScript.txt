@@ -1,0 +1,142 @@
+Printing to the console:
+  console.log('str');
+
+Linking .js to html file:
+  <script src = "script.js"></script> //this is a html tag, scr attribute links the .js file to the html file
+
+Declaring a variable:
+  var variable_name = 'str';    //variable of type String
+  var name;   //variable of type undefined, prints undefined to the console as name is not assigned a value.
+  In js, a variable name can start with a $ or _ sign.
+
+Datatypes:
+  Number - Floating point numbers, for decimals and integers //js unlike other languages, store int in form of floating point.
+  String - Sequence of characters, used for text.
+  Boolean - Logical data type that can only be true or false.
+  Undefined - Data type of a variable that does not have a value yet.
+  Null - Also means 'non-existent'.
+
+Comments are same as C language.
+
+Type coercion:
+  Js automatically converts an int to a string when printing a str and an integer using a + operator in console.log() function.
+  eg.
+    console.log('firstName' + ' ' + 28)   //Output: firstName 28
+  Every datatype is converted to a string when using + operator in console.log()
+
+Variable Mutation:
+  Variables can be directly reassigned to another Datatypes.
+
+alert();
+  This function displaces the content in the argument of the function in a pop up dialog in the browser.
+
+prompt();
+  Used to take input in a variable, opens a pop up dialog in the browser.
+
+Operators:
+  Math operators: +, -, *, /
+  Logical operators: <, >, <=, >=, &&, ||, !
+  Increment/Decrement: ++, --
+typeof operator:
+  Returns the datatype of the variable.
+  eg.
+    console.log(typeof var_name);   //prints datatype of var_name
+
+Mutiple Assignments:
+  eg.
+    x = y = expression    //x and y will be assigned with the same value
+
+if/else if/else statement:
+  syntax:
+    if (condition === true) {
+      <execute the following>
+    } else if (Condition === true) {
+        <execute the following>
+    } else {
+      <execute the following>
+    }
+
+Ternary Operator:
+  Simplified expression for if else statement
+  eg.
+    var drink = age >= 18 ? 'Beer' : 'Juice';   //in this statement, the statement after ? is under if and the statement
+    after : is under else block
+Truthy and Falsy Value:
+  Falsy values: undefined, null, 0, '', NaN
+  Used as boolean conditions
+  Can be used to check an unassigned variable using if statement
+
+Equality operators:
+  ==, != does type coercion //doesnot compare datatype
+  ===, !== strictly compares including the datatype
+
+Defining a function:
+    Syntax:
+      function funcName (argumentVar) {
+         ======
+      }
+Function Expression:
+  Syntax:
+    var varName = function(argumentVar) {   //Can call the function with varName
+      ====
+    }
+
+Arrays:
+  Syntax:
+    var name = [element1, element2, ....]
+    OR
+    var name = new Array();
+  Accepts every datatype in a single array.
+  Array methods:
+    name.length: returns length of the array name
+    name.push(e): add e to the end of the array
+    name.unshift(e): add e to the beginning of the array
+    name.pop(): removes the element from the end of the array
+    name.shift(): removes the first element from the front of the array
+    name.indexOf(e): returns the index position of e in the array, if e not present in the array, returns -1
+
+Objects:
+  Syntax:
+    var name = {
+      p1: 'v1',
+      p2: 'v2'
+    };
+    OR
+    var name = new Object();    //can now enter data manually for eg. name.p1 = 'v1'
+  Here p1, p2 are known as properties of object name.
+  Calling values from the object:
+  --name.p1
+  --name['p1']    //Both returns the value of p1 in the object name
+  Objects are mutable.
+
+Object Methods:
+  Functions defined inside the object are called Methods.
+  Syntax:
+    keyValue: function(arg) {
+      =====
+    }
+  Calling the method:
+    name.keyValue(arg)
+  This keyword is used to  access a keyword within the object.
+  eg.
+    this.keyValue
+
+Switch statement:
+  Same as in  C.
+
+For loop:
+  Same as in C.
+
+While loop:
+  Same as in C.
+
+Break and Continue keyword:
+  Same as in C.
+
+Hoisting:
+  For functions:
+    When a program is executed, first the intepreter scans for all the function declarations in the code and register them in
+    its memory. This allows us to use the function before it is actually declared in the code.
+  For variables:
+    When a program is executed, intepreter scans for any variable declarations, and assign them with undefined type. Later
+    during code execution, it is assigned to its value and its datatype.

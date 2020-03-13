@@ -1,0 +1,1375 @@
+################################################# S . T . A . R . T #################################################
+
+CSS: Cascading Style Sheets
+
+Combinators:
+    Ways to specify which element needs to be affected from the style.
+    Types:
+        Adjecent Sibling(+):
+            Applies if the second tag is directly adjecent with respect to the first tag.
+            eg.
+                div + p {
+                    color: red;         // This applies red color on <p> tag which is directly followed by the div tag
+                }
+
+        General Sibling(~):
+            Applies if the second tag occurs after the first tag.
+            eg.
+                div ~ p {
+                    color: red;         // This applies red color on <p> tag which is followed by the div 
+                }                          tag, not necessarily adjecent.
+                            
+        Child(>):
+            Applies if the second tag is under the level(2nd level) of the first tag.
+            eg.
+                div > p {
+                    color: red;         // Applies when p is under div, that too just under div(same level)
+                }
+
+        Descendant(<space>):
+            Applies if the second tag is under the first tag. Level doesn't matter.
+    
+Selectors:
+    Ways to select the elements which need to get styled.
+    Types:
+        Elements:
+            HTML: <h1>
+            CSS: h1 { }
+        Classes:
+            HTML: <h1 class="my-class">
+            CSS: .my-class { }
+        Universal:
+            HTML: <h1><p><button>
+            CSS: * { }
+        IDs:
+            HTML: <h1 id="temp">
+            CSS: #temp { }
+        Attributes:
+            HTML: <button disabled>
+            CSS: [disabled] { }
+        
+Cascading: Multiple rules can apply to the same element.
+
+Specificity:
+    Resolve conflicts arising from multiple rules.
+    Priority order:
+        Inline Styles
+             v
+        #ID selectors
+             v
+        .class, pseudo-class and [attribute] selectors
+             v
+        <Tag> and ::pseudo-element selectors
+
+CSS is Case Insensitive.
+
+Inheritance:
+    Styles are applied to the most parent element (body) and are inherited by all the child elements.
+    Inheritance have the lowest Specificity.
+    To increase the specificity of inheritance, we use the 'inherit' value on a property.
+    eg.
+        font-family: inherit;
+
+BOX Model:
+    CSS interprets every property of an element as a box.
+
+    The body element by default has a margin (depends on browser).
+    To alter the body margin, simply add 'margin: 0;' for body selector.
+
+    Margin Collapsing:
+        When 2 element are adjecent to each other, their margins merge, the bigger margin is in action by default.
+
+Shorthand Properties:
+    Shorthand provides us a short way to alter values for similar type of Properties.
+    eg.
+        Border: 
+            border-style: solid;
+            border-color: red;
+            border-width: 5px;
+        ShortHand:
+            border: 5px solid red;
+    The shorthand here will give same output as in the seperately defined properties.
+    The order of values provided does not matter if there arn't any properties which accepts different type of values.
+    But if there are properties which accepts similar type of values, the order do matter.
+    eg.
+        margin: 5px 10px 5px 10px;      // The order goes as Top Right Bottom Left
+        margin: 5px 10px;               // The order goes as Top & Bottom Left & Right
+Box Sizing:
+    box-sizing: border-box;         // considers padding and border while adjusting height or width
+    box-sizing: content-box;        // does not considers padding and border while adjusting height or width
+    Recommended: set border-sizing to border-box for every element using *.
+
+'display' Property:
+    display property enables us to change the style of the element, i.e. block, inline or both.
+    Inline elements are those which are rendered in a single line by default by the browser.
+    Block elements are those which are rendered in a block, i.e. in a new line in form of block.
+    If we choose to enable both, we can adjust padding border etc as we do in block level elements while the element 
+            being an inline one.
+    To enable both:
+        display: inline-block;
+
+calc():
+    This function can be used in css for dimension calculations.
+    Adjust dimentions using arithmatic operators.
+
+Pseudo Classes and Pseudo Elements:
+    Pseudo Classes: defines the style of a special state of an element. Used via ':'. eg. hover, active, etc.
+    Pseudo Element: defines the style of a specific part of an element. Used via '::'. eg. after, before, first-letter, 
+            etc.
+
+    Pseudo Element '::after':
+        We add a special property named 'content' for the after pseudo element.
+        'content' allows us to add the content specified as its value to every element with the 'after' or 'before' 
+                pseudo element.
+
+Add same properties to more than one elements:
+    We can assign same set of properties to multiple elements as following:
+        a, h1 { }       or      a:hover,a:active { }
+
+url():
+    This function is used to specify a path for an image for example.
+
+Combine Selectors:
+    We can combine selectors for styling a specific element.
+    eg.
+        a.active { }        // This will target the a tags with class active
+        a#anchorID          // This will target the a tag with id 'anchorID'
+
+!important:
+    This keyword is used to overwrite the specificity order, forcing the property to be applied no matter what the 
+            specificity.
+    eg.
+        color: red !important;
+    This shouldn't be used as it will disrupt the order of specificity.
+
+:not():
+    'not' pseodo class is used to exclude the elements which have the property specified to the not and target rest.
+    eg.
+        :not(.active) { }       // This will exclude all elements which have class active.
+        a:not(.active) { }      // This will exclude all the a tags which have class active.
+
+box-shadow:
+    This property is used to add a shadow around an element.
+    eg.
+        box-shadow: 2px 2px 2px 2px red;
+        This will set the shadow around the box for 2px.
+
+rgb():
+    This is a function which is used to set color in rgb format.
+    eg.
+        rgb(255, 255, 255)      // This refers to color white
+    This function also has a subling: rgba().
+    rgba() is used to specify transparency as well.
+    eg.
+        rgba(0,0,0,0.8)         // This refers to black with alpha(transparency) value of 0.8(1~Opaque,0~Transparent).
+
+'clear: both': 
+    It is a property which clears float values.
+
+# Positioning of the elements:
+
+'position' property:
+    It is a property that is used to change the positioning characteristics of an element.
+    It has the following values:
+        static (default)
+        absolute
+        relative
+        fixed
+        sticky (new)
+    'fixed':
+        'fixed' does the following things:
+            Takes the element out of the document flow.
+            Convert the element to inline-block.
+            Fixes the position of the element with respect to the viewport (Browser Screen).
+            To setup a Navbar using 'fixed':
+                marign: 0;
+                top: 0;
+                left: 0;
+                width: 100%;
+                box-sizing: border-box;
+    'absolute':
+        It is similar to fixed with a difference:
+            It fixes the position with respect to the previous ancestor which have the position property applied.
+    'relative':
+        It changes the behavior of the element to change its position with reference of its original position.
+        To prevent the child element being displayed outside of the parent element due to faulty dimentioning:
+            overflow: hidden;
+        We can use overflow property on parent to make sure the element is only displayed inside the parent.
+        To use overflow on body element, we need to apply the overflow property on body as well as html selector, 
+                due to default behavior of CSS.
+    'sticky':
+        It is a combination of 'fixed' and 'relative'.
+        Its top is positioned with respect to the view port.
+        It ends its fixed property when the page is scrolled below its parent element.
+        
+
+Properties to change the position of the elements:
+    There are properties that are used to specify the exact position of the element with respect to the position 
+            property used on the element:
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+
+'z-index' property:
+    This property is used to change the position of an element with respect to the z-axix.
+    By default, each element has a 'z-index' value set as 'auto' or '0'.
+    For eg:
+        z-index: -1;
+        This will move the element behind all the elements by 1 level.
+    Stacking Context of z-index:
+        The z-index of an element is applied with respect to the z-index of the parent element.
+        If the z-index of a child element is higher than the z-index of another parent element, it will have no effect
+                as the z-index of the parent of the child is less than the z-index of the other parent.
+
+
+# Backgrounds
+
+'background' property:
+    It is a shortend used to access the various modifications related to background.
+
+'background-color' property:
+    It is used to set the background color.
+
+'background-image' property:
+    It is used to set a background image.
+    If 'background-color' and 'background-image' both are applied simulteneously, irrespective of what comes first,
+            background-image always dominates over background-color.
+
+'background-size' property:
+    It is used to set the size of the background image.
+    Eg:
+        background-size: 100%;          // sets the size of image to occupy the whole container
+        background-size: 100% 50%;      // sets the width to 100% and height to 50%
+    It also have several predifined values.
+    Eg:
+        background-size: cover;         // it makes sure to fill the complete space of the container with the image
+        background-size: contain;       // ensures the image is completely inside the container, irrespective of 
+                                                whether it covers the container or not
+
+'background-repeat' property:
+    By default, if the image size specified is much smaller than the area available inside the container, the image
+            is repeated by default, both on x and y axix.
+    This property takes several values:
+        background-repeat: no-repeat;       // this stops image repeatition
+        background-repeat: repeat-x;        // this repeats the image along x-axix
+        background-repeat: repeat-y;        // this repeats the image along y-axix
+
+'background-position' property:
+    It is used to define the position of the image inside the container.
+    It can be used in several ways.
+    Eg:
+        background-position: 10px;                  // pushes the image away from the left by 10px
+        background-position: 10px 10px;             // pushes the image away from the left and from top by 10px
+        background-position: [x-axis] [y-axix];     // shows that 1st and 2nd value is for x and y axis respectively
+        background-position: 10% 20%;               // specifies that image will be cropped by 10% from the left and
+                                                            by 20% from the top
+        background-position: left bottom;           // stick the edge of the image on left and bottom of the container
+        background-position: left top;              // same but top instead of bottom
+        background-position: left 10% bottom 20%    // specifies that image will be cropped by 10% from the left and
+                                                            by 20% from the bottom
+
+'background-origin' property:
+    It specifies the coverage area for the background image with respect to the container.
+    For eg:
+        background-origin: content-box;     // will display image inside the border and padding of the container
+        background-origin: padding-box;     // will display image across the padding area
+        background-origin: border-box;      // will display the image across the container including container borders
+
+'background-clip' property:
+    It specifies the area with respect to the container from where the image will be clipped.
+    For eg:
+        background-clip: content-box;     // clips the image down to the content area, inside the padding
+        background-clip: padding-box;     // clips the image down to include the padding area
+        background-clip: border-box;      // clips the image down to include the margin area
+    This properties overwrites the background-origin property.
+
+'background-attachment' property:
+    It is used to set the scroll behavior of the background image with respect to the page and other elements.
+    For eg:
+        background-attachment: fixed;       // this fixes the image with respect to the viewport of the web browser
+        background-attachment: scroll;      // this fixes the image with respect to the container of the image
+        background-attachment: local;       // this sets the image to be scrolled with other items on the page
+
+ShortHand to use all the properties:
+    'background' can be used to apply all the properties together.
+    Syntax:
+        background: [color / image / gradient] [position]/[size] [repeat] [origin] [clip]
+        The sequence is as above.
+
+
+# Images
+
+Backgrounds give us more versitility to format them, but we can also format our images.
+An image should have a surrounding container. Classes should be assigned to the container and the image itself.
+By default, when the size of the image is specified in % on the img class, it sets the size of the image with respect
+        to the dimentions of the image.
+The container surrounded by the image should be converted to a inline-block element so that the size assigned in %
+        to the image should be reflected on the webpage.
+Eg:
+    .container-class {
+        display: inline-block;
+        width: 70%;
+        vertical-align: middle;
+        box-shadow: 3px 3px 5px 3px rgba(0, 0, 0, 0.3);
+    }
+    .img-class {
+        width: 100%             // 100% of the container
+    }
+    
+    The image will respect the size specified to its container if the display is set to inline-block.
+    4th size value of the box-shadow applied on the container is known as 'spread'. It indicates by how much the 
+            shadow is to extend outside of the margins of the container.
+
+
+# Gradients
+
+Gradients can be applied as a background image.
+
+'linear-gradient()' function:
+    This function is assigned to the 'background-image' property.
+    It allows us to set linear gradients.
+    Syntax:
+        background-image: linear-gradient([direction], color1, color2, color3, and so on...);
+        The direction argument is optional. We can start by specifying the colors for the gradient.
+        By default, gradient will be directioned from top to the bottom in the sequence of the specified colors.
+        Each color is equally displayed in the gradient by default.
+        Direction can be set in different ways:
+            to bottom: direction from top to bottom
+            to left bottom: will align gradient diagonally which will finish on the left bottom corner
+            0deg: direction specified in degrees. By default, angle starts from the bottom.
+            30deg: will shift to 30deg clockwise from the bottom.
+    Eg:
+        background-image: linear-gradient(red 70%, blue 80%);
+        The percentage values after the color specifies the finishing length of the color in the gradient with
+                respect to the container of the gradient.
+
+'radial-gradient' function:
+    This is also assigned to the 'background-image' property.
+    Eg:
+        background-image: radial-gradient([shape] [size] at [position], color1 [length%], ...)
+        
+        The first argument can be omited.
+        [shape]:
+            By default, radial-gradient provides elliptical shape.
+            There are only 2 values to the shape:
+                ellipse
+                circle
+        [size]:
+            This helps us to set the size for the shape of the gradient.
+            Size can be specified in pixels or in percentage or in any dimentions available.
+            There are several default keywords available to specify the shape:
+                farther-side        // strech the 2nd last color specified to the other side of the container
+                closest-side        // starts the gradient from the left side of the container
+                farthest-corner     // ensures the outermost ring touches the closest corners
+                closest-corner      //  ensures the outermost ring touches the farthest corners
+        [position]:
+            It is specified in terms of x and y axis positions of the gradient.
+        [length%]:
+            Length covered by the color ring
+
+
+# Background Stacking
+
+We can use multiple type of backgrounds or multiple backgrounds.
+This can be done using the shorthand for background properties, 'background'.
+Eg:
+    background: linear-gradient(), url(), color;
+    'Top to Bottom' will go from 'Left to Right'.
+    linear-gradient will be on top, than url, than color.
+We can set only one solid color, and multiple images as background.
+
+
+# Filters
+
+'filter' is a property which can be applied on an image.
+It is an overlay and by default provide several default keywords which we can use to achieve several functionality.
+
+
+# Sizes and Units
+
+Rules for 'percentage' sizing:
+    If an element has position: fixed applied, than the % sizing will be with reference to the viewport.
+    If an element has position: absolute applied, than the % sizing will be with reference to the (content+padding)
+            area of the last ancestor which has the position: relative/absolute/fixed/sticky applied.
+    If an element has position: static/relative applied, than the % sizing will be with reference to the content area
+            of the last block level ancestor.
+
+'max-width':
+    Used to set maximum width to the element.
+
+'min-width':
+    Used to set minimum width to the element.
+
+Font Sizing:
+    Specifying the size of fonts in units such as px will have on change on the font size when we change the browser
+            settings for the font.
+    To make the font size dynamic, i.e. respect the browser settings too, there are some special units available for
+            this purpose:
+        'em'
+        'rem'
+        Browser sets a default size for the fonts. These units take the browser default font size and multiply it
+                with the value specified with the unit 'em' or 'rem'.
+        Behavior of 'em':
+            em inherits the font size of its parent elements and scales its size with its own value.
+        The only difference between 'rem' and 'em' is that 'rem' does not inherit any font size from its
+                parent elements.
+        It only obeys the current value which gets multiplied with the browser defaults.
+
+Viewport Units:
+    There are units which are used to define the size of an element with respect to the viewport of the browser:
+        vw: sets width with respect to the width of the viewport.
+        vh: sets height with respect to the height of the viewport.
+        vmin: sets the size with respect to the smaller dimention of the viewport.
+        vmax: sets the size with respect to the larger dimention of the viewport.
+    These units takes value in terms of percentages of the dimentions of the viewport.
+
+
+# Using JavaScript for styling
+
+JavaScript can be used to change the styles of an element dynamically or after the page has been loaded.
+JavaScript functions can be defined in 2 ways:
+    Inline, i.e. in the html file itself inside the <script></script> tag.
+    In a seperate js file
+
+Importing a js file in a html file:
+    To link a js file into an html file, we pass an attribute to the script tag as:
+        <script src="jsFileName.js"></script>
+
+Selecting an element in the JavaScript file:
+    We can select an element or multiple elements from the js file using the same selectors as in css and some built
+            in functions for js.
+    DOM stands for Document Object Model. It is a virtual representation of our html page.
+    Js selects the elements from the DOM of the page.
+    
+    Selecting a single element inside the js file:
+        var varName = document.querySelector(
+            '[.className / #id / any other selector used in css, along with combinators too]')
+
+        Above, 'var' is used to declare a variable in the js file.
+        'varName' is the name for the variable.
+        'document' is an object which helps us to access the DOM.
+        'querySelector' is a function of 'document' which is used to select an element from the DOM.
+        It only returns the first occurence of the element in the DOM.
+    
+    Selecting multiple elements:
+        Instead of 'querySelector', use 'querySelectorAll'.
+        It returns an array of elements with the specified selector.
+    
+    The above mensioned methods to select the element are only used to select inline styles.
+    They cannot be used to select styles from a CSS file.
+
+Accessing the styles of an element:
+    Element styles can be accessed using the variable which has the reference for the element.
+    Eg:
+        varName.style.display = 'block';
+
+        Here, any property can be accessed using the style keyword followed by the property name as shown.
+
+Adding event listner to an element:
+    Eg:
+        varName.addEventListner('click', function() {
+            ===
+        })
+
+        'varName' has a reference to an element via 'querySelector'.
+        'addEventListner' is the keyword which is used to attatch an event listner to the element.
+        Event Listner are of many types. The one used above is used to execute the function when the element is
+                clicked on the html page.
+
+Replacing a class with JavaScript:
+    To replace an existing class on an element:
+        varName.className = 'newClass';
+
+        'varName' has a reference to the element.
+        'className' is used to assign a new class to the element.
+        'newClass' is the name for the new class which is to be assigned to the element.
+
+Adding or removing classes on the element:
+    We can add classes on an element as an inline class as follows:
+        varName.classList.add('newClass');
+
+    To remove an incline class:
+        varName.classList.remove('classToBeRemoved');
+
+Accessing CSS propeties in js file:
+    If we have a multiple words property, such as 'border-radius', which have its 2 words seperated by '-',
+            then to access this property in js file, there are 2 ways:
+        varName.style['border-radius']      // property name is passed as a string inside []
+        varName.style.borderRadius          // camelCasing used for 2 seperate words to access the property in this way
+
+
+# Making our website responsive
+
+'viewport' meta tag:
+    It helps the browser to understand the difference between the size of the devices.
+    It is placed in the head section of the html file.
+    Eg:
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=2.0, 
+            minimum-scale=1.2">
+
+        [name="viewport"] specifies the meta tag content is to be refered to the viewport of the webpage.
+        'content' has several properties which are linked to the webpage.
+        [width=device-width] informs the browser the size of the device on which the webpage is opened.
+        [initial-scale=1.0] specifies the default zoom level of the webpage.
+        [user-scalable=yes] allows the user to zoom in to the webpage. Set it to 'no' to diable the zoom functionality.
+        [maximum-scale=2.0] is used to set the limit for user to zoom the webpage 2 times.
+        [minimum-scale=1.2] is used to set the limit for user to zoom out the webpage to 1.2 times.
+
+'@media' queries:
+    These are sort of an if statement inside a css file.
+    These help us to set the css properties base on specified conditions.
+    Eg:
+        @media (min-width: 40rem) {
+            .className {
+                font-size: 2rem;
+            }
+        }
+
+        Here, 'min-width' is the condition which is checked before the properties inside the media
+                queries are applied.
+        If the width of the page is greater than 40rem, than the code inside the @media query is applied.
+    There can be multiple @media queries in a CSS file.
+    If there are 2 media queries and their conditions clashes with each other, than the @media query which is used
+            later in the CSS file is applied.
+    Multiple conditions for @media queries:
+        To check for multiple conditions, 'and' or ',' is used.
+        Eg:
+            @media (min-height: 40rem) and (orientation: potrait) { }
+
+            In the above line, when both the conditions are met, than the code inside the @media query is applied. 
+
+            @media (min-height: 40rem), (orientation: potrait) { }
+
+            In the above line, when one of the two conditions are met, than the code inside the @media query is
+                    applied. 
+
+
+# Styling Forms
+
+Advanced Attribute Selectors:
+    We can also used attributes in different manner to select the elements in the DOM.
+    
+    -Element with Attribute:
+        [type] { }
+        This selects all elements which contain type attribute.
+    
+    -Element with specific attribute value:
+        [type="email"] { }
+        This will select all elements which has type="email".
+    
+    -Element with specific attribute value in list:
+        [lang ~="en-us"] { }
+        This selects all the elements which has a 'lang' attribute, with a value as a list of values in which 'en-us'
+                is one of the value in the list.
+    
+    -Element with specific attribute 'value' / 'value-':
+        [lang |="en"] { }
+        This selects all elements which has a 'lang' attribute, with a value which starts with 'en' or 'en-'.
+    
+    -Element with specific attribute value prefix:
+        [href^="#"] { }
+        This will select elements which has a 'href' attribute, and whose value starts with '#'.
+
+    -Element with specific attribute value suffix:
+        [href$=".de"] { }
+        This will select elements which has a 'href' attribute, and whose value ends with '.de'.
+    
+    -Elements with at least one attribute value:
+        [src*="cdn"] { }
+        This will select elements which has a 'src' attribute, and 'cdn' is found in between or anywhere in its value.
+        Insert 'i' after specifying the value to ignore the case sensitivity of the value.
+            [src*="cdn" i] { }
+'outline' property:
+    It is activated when an input element is focused.
+    It is similar to a border but it does contribute in the size of the element.
+    It comes after the border.
+
+:not() pseudo selector:
+    It is used to add exceptions for a selector.
+    Eg:
+        input:not([type="email"]) { }
+        This will select all the input elements on the webpage instead those which have a type="email" attribute.
+
+'appearance' property:
+    This property is applied by default by the browser on the element.
+    Browser provides different type of values for this property depending on the element type.
+    This property can be accessed using different property names for different browsers, such as:
+        -webkit-appearance          // for chrome
+        -moz-appearance             // for mozilla
+    To overwrite this property, we set it to none.
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+
+:checked pseudo class:
+    It is used with the input element with type="checkbox".
+    It is used to set the properties for a checked checkbox input element.
+
+:invalid pseudo class:
+    It is used to set the properties for the elements inside the form if any of the form elements are invalid.
+    Eg:
+        .form-class :invalid {
+            ...
+        }
+        The space before ':' is important.
+    There is a valid pseodo class as well which works in the same manner.
+
+
+# Working with Texts and Fonts
+
+Generic Families:
+    There are specific font families which are characterised into generic families:
+        serif
+        sans-serif
+        cursive
+        monospace
+        fantasy
+    These act as fallbacks when the desired font-family are not available to the browser.
+
+Font Families:
+    The fonts which share common generic font are said to be a font family.
+
+Applying a Font Family through CSS:
+    For applying a font family, we need to make sure that the font family has been imported in the HTML file.
+    Now, to apply the font family, we follow the following syntax:
+        body {
+            font-family: "fontFamilyName", sans-serif;
+        }
+        Here, "fontFamilyName" is the font that has been imported in the html file.
+        It is necessary to wrap the font family name in quotes("") if the font family name consists of multiple words.
+        If the font family name is one word only, than it is optional to use quotes.
+        In the above example, "fontFamilyName" will be applied by default on our html page.
+        In case, "fontFamilyName" is not valid or not found, the font family to be used will be the font family
+                which is specified after the "fontFamilyName".
+        In the above example, "sans-serif" is a generic font family which will be applied in case if "fontFamilyName"
+                is not found or is invalid.
+        We can pass as many font family names as the value of 'font-family' property (seperated by comma).
+        They will be applied in the fallback order.
+        The last font family must always be a generic family which makes sure that font is always displayed on
+                our webpage.
+
+Importing a web font:
+    There are 2 ways to import a web font:
+        Importing in HTML file
+        Importing in CSS file
+
+Font Faces:
+    A font family also consists of font faces which define the weight or style for the font family.
+    To use the font face of our web imported font family, we need to make sure that we have also imported the
+            font faces related to the font family in order to use them.
+    The browser, by default, tries to add the font style on its own in case the font style related to the font
+            family is not imported.
+    The font faces can be used using the 'font-weight' and 'font-style' properties.
+    Eg:
+        body {
+            font-family: "Roboto", sans-serif;
+            font-weight: 900;
+            font-style: italic
+        }
+
+Importing Font Faces via font-face (.ttf) file:
+    We can also import the font face using the font-face files which are saved in the project directory.
+    Eg:
+        @font-face {
+            font-family: "fontFamilyName";
+            src: url("path to the .ttf file");
+        }
+        This will import the font-face with the 'normal' font-weight by default.
+        To specify the font-weight, we need to explicitely include the font-weight property to the import:
+            @font-face {
+            font-family: "fontFamilyName";
+            src: url("path to the .ttf file");
+            font-weight: 700;
+        }
+
+Different Font Properties:
+    font-size
+    font-variant
+    font-stretch
+    letter-spacing
+    white-space
+    line-height
+    text-decoration
+    text-shadow
+
+Font ShortHand:
+    We can use properties related to font together using the font shorthand:
+        font: font-style font-variant font-weight font-size/line-height font-family;
+        In the above example, font-size and font-family are compulsory arguments for the font shorthand, rest
+                are optional.
+        The positioning of the properties is important and the above mensioned order is to be followed.
+    Font shorthand can also be used to set some default system fonts.
+    Eg:
+        font: menu;
+        font: status-bar;
+
+'font-display' property:
+    This property is used to optimize the loading time of the fonts.
+    It is used with the '@font-face' import.
+    It is set to 'auto' by default.
+    It as additional 4 values:
+        swap
+        block
+        fallback
+        optional
+    Eg:
+        @font-face {
+            font-family: "fontFamilyName";
+            src: url("path to the .ttf file");
+            font-display: swap;
+        }
+
+
+# Flexbox
+
+Flexbox provide an efficient way to display items in a container.
+A Flexbox container is known as 'flex container' and the items inside it are known as 'flex items'.
+
+Converting a container to flex container:
+    To do so, we apply any of the 2 properties:
+        display: flex;                  // flex items behave as block elements
+        display: inline-flex;           // flex items behave as inline elements
+
+    By using the above properties, several properties are applied by default with their default values:
+        flex-direction: row;
+        flex-wrap: nowrap;
+    
+    A flex container's orientation can be described in terms of 'main' and 'cross' axis.
+    The position of main and cross axis depends on the flex-direction property.
+
+'flex-direction' property:
+    It is used to set the direction or orientation of the flex container.
+    It has following values:
+            flex-direction: row;                                        // used by default
+                main axis goes from top-left to top-right
+                cross axis goes for top to bottom
+            flex-direction: row-reverse;
+                main axis goes from top-right to top-left
+                cross axis goes for top to bottom
+            flex-direction: column;
+                main axis goes from top to bottom
+                cross axis goes for top-left to top-right
+            flex-direction: column-reverse;
+                main axis goes from bottom to top
+                cross axis goes for top-left to top-right
+
+'flex-wrap' property:
+    It is used to handle the behavior of the flex container of how it handle its flex items.
+    It has following values:
+        flex-wrap: nowrap;
+        flex-wrap: wrap;
+        flex-wrap: wrap-reverse;
+
+'flex-flow' property:
+    It is a shorthand for 'flex-direction' and 'flex-wrap' property.
+    Its syntax is as follows:
+        flex-flow: [direction] [wrap];
+
+Aligning items inside the flex-container:
+    There are properties which are used to align items inside the container:
+        justify-content
+        align-items
+    These properties take a few common values:
+        flex-start
+        flex-end
+        center
+        etc...
+
+    'justify-content' property:
+        This defines the alignment of the items inside the flex container with respect to the main axis.
+
+    'align-items' property:
+        This defines the alignment of the items inside the flex container with respect to the cross axis.
+
+    'align-content' property:
+        This property is used to define the alignment of flex items along the cross axis with respect to a row
+                inside a container.
+        Eg:
+            align-content: center;
+            align-content: space-between;
+
+Flex Items Properties:
+    We can apply properties to flex items as well.
+
+'order' property:
+    This property defines the sequencial order of the element at which it is to be displayed in the flex container.
+    It accepts numerical values as to define the order of the element.
+    By default, order of all elements is 0.
+    Higher the order of the element, later the element will occur along the main axis.
+    Eg:
+        item_1 {
+            order: 1;
+        }
+
+'align-self' property:
+    This property is similar to the 'align-items' property with a difference that 'align-items' refers to
+            all the flex elements, whereas 'align-self' refers to a single flex item.
+    It has similar values as 'align-items' property.
+
+'flex-grow' property:
+    It allows the item to take up the empty space, along the main axis of the flex container, in the ratio of
+            the value provided to it.
+    Eg:
+        item_1 {
+            flex-grow: 1;
+        }
+        item_2 {
+            flex-grow: 2;
+        }
+        The 1st item will take up the empty space in the ratio 1/3.
+        The 2nd item will take up the empty space in the ratio 2/3.
+    By default, flex-grow has the value of 0 at all flex items.
+
+'flex-shrink' property:
+    It allows the item to shrink, along the main axis of the flex container, in the ratio of the value provided
+            to it.
+    By default, flex-shrink has the value of 1 at all flex items.
+
+'flex-basis' property:
+    It is used to define a fixed length for an item along the main axis.
+    It has a default value of 'auto'.
+    At its default value, its behavior falls back to the value of height or width, depending on the orientation of
+            main axis.
+    It accepts length values.
+
+flex shorthand:
+    flex shortend is used to use flex-grow, flex-shrink and flex-basis together.
+    Eg:
+        flex: [flex-grow] [flex-shrink] [flex-basis];
+
+
+# CSS Grid
+
+Grid is an advanced CSS concept which helps us in better positioning of elements on our webpage.
+
+Converting a container to a Grid:
+    To convert a div container to a Grid:
+        display: grid;
+    The elements right under the parent grid are affected by the grid positioning.
+
+Properties used by a Grid Container:
+    'grid-template-columns' property:
+        It is used to explicitely define columns and its length.
+        Eg:
+            grid-template-columns: 50px 50px;
+            This defines 2 columns within a grid of length 50px each.
+
+            grid-template-columns: 50px 20% 1fr 3fr;
+            This defines 4 columns within a grid, of which, the first column takes a fixed length of 50px, second
+                    column takes a length of 20% of the length of the surrounding container, the third column and
+                    the 4th column use a special unit known as 'fractional unit'. This unit defines the length of
+                    the columns in ratio of the provided value, with respect to the left over space after defining
+                    the first 2 columns.
+
+    'grid-template-rows' property:
+        It is used to explicitely define the rows inside a grid in the similar way as we define columns using
+                'grid-template-columns' property.
+    The following properties can also take a value of 'auto', which tells a cell to take up the remaining space of
+            the grid.
+
+Spanning rows and columns of the Grid:
+    We can set an element of a grid to take up the space of multiple cells.
+    The CSS Grid system defines 'numbers' for its grid lines.
+    There are few properties which are used on the grid elements itself to help us with the above mensioned behavior.
+    Spanning columns:
+        We can allow a grid element to take up the space of multiple column by combining the following properties:
+            grid-column-start
+            grid-column-end
+        The follownig can be illustrated using the following example:
+            grid-column-start: 2;
+            grid-column-end: 4;
+            The above example states that the element will take up the space between the grid line number 2 and
+                    the grid line number 4.
+            The element will be occupying the space of 2 columns.
+    Spanning rows:
+        We can achieve the similar behavior for rows by using following properties:
+            grid-row-start
+            grid-row-end
+    
+    For the 'grid-column-end' and 'grid-row-end' property, instead of passing the line number to which the cell
+            is to end, we can pass the number of cells the cell is to be spanned.
+    Eg:
+        grid-row-start: 1;
+        grid-row-end: span 2;
+        The 'span 2' is a single value which tells the grid element to span across 2 rows of the grid.
+    
+    It is also possible for the grid elements to get overlapped if we explicitely define the start and end of the
+            cell such as they overlap with each other.
+
+'repeat()' function:
+    It allows us to repeat the input for the values.
+    Eg:
+        grid-template-columns: repeat(N, 5rem);
+        N is the number of times the argument needs to be repeated.
+        In the above statement, there will be N columns each with a length of 5rem inside the grid.
+
+'minmax()' function:
+    It is used to define the min and max length of a cell.
+    Eg:
+        grid-template-rows: 5rem minmax(10px, 150px);
+        The above statement defines 2 rows inside the Grid.
+        The first row will have a height of 5rem.
+        The second row will have a minimum height of 10px and a maximum height of 150px, as per the space available
+                inside the grid.
+
+Naming Grid Lines:
+    By default, Grid assign numbers to the grid lines.
+    We can also assign custom names to the grid lines.
+    Eg:
+        grid-template-columns: [col-1-start] 5rem [col-1-end col-2-start] 10rem [col-2-end]
+        In the above example, we assigned names to the lines as:
+            Line 1: col-1-start
+            Line 2: col-1-end & col-2-start
+            Line 3: col-2-end
+        It shows that we can also assign multiple names to a grid line.
+        Now, we can used the grid line names as a reference to the grid lines in the properties such as
+                grid-row-start, etc.
+
+'grid-column' & 'grid-row' ShortHand:
+    It is used to combine the 'start' and 'end' properties into one property.
+    Eg:
+        grid-column: 1 / span 2;
+        In the above example, the start value is 1 and the end value is stated to be 'span 2', with a
+                seperation via '/'.
+'grid-area' ShortHand:
+    This shorthand combines the start and end properties of both rows and columns.
+    Eg:
+        grid-area: [grid-row-start] / [grid-column-start] / [grid-row-end] / [grid-column-end];
+
+Adding gaps between grid rows and columns:
+    'grid-column-gap' & 'grid-row-gap' properties:
+        These properties are used to specify gaps between the grid cells.
+        Eg:
+            grid-column-gap: 10px;
+            grid-row-gap: 20px;
+            The above example adds a gap of 10px to the columns and of 20px to the rows.
+    
+    'grid-gap' ShortHand:
+        This is used to combine 'grid-column-gap' & 'grid-row-gap' properties.
+        Eg:
+            grid-gap: [row-gap] [column-gap];
+            grid-gap: 10px;                             // assigns a gap of 10px to both rows and columns
+
+Naming the cells of the grid:
+    We can assign names to the cells of the CSS grid using the 'grid-template-areas' property:
+    Eg:
+        grid-template-areas: "header header header header"
+                             ". . main main"
+                             "footer footer footer footer";
+        The above example is the naming of a 3x4 (3 rows 4 columns) Grid.
+        Here, the 4 columns in the first row are named as header.
+        The first 2 columns of the 2nd row are unnamed, hence left with a '.'
+        The 4 columns in the 3rd row are named as footer.
+        The cells can now be refered, using the assigned names, by different properties:
+            grid-area: header;
+            This makes sure that the grid element spans across the cells named as 'header'.
+    The naming must be done of each and every cell inside the grid.
+
+Naming Grid lines with the use of repeat() function:
+    We can name the grid lines inside the repeat() function as follows:
+        grid-template-columns: repeat(N, [col-start] 5rem [col-end]);
+        Now, to access a specific iteration of the col, we do the following:
+            grid-column: col-start 2 / col-end 2;
+            This will access the 2nd iteration of col-start and col-end.
+
+Naming a Grid area:
+    We can name a grid area by following a specific naming convension to name the columns and rows of the grid.
+    Eg:
+        grid-template-columns: [header-start] repeat(4, 25%) [header-end];
+        grid-template-rows: [header-start] 5rem 5rem [header-end];
+
+        Now, if we we need to access the above defined section of the grid, we simply access it using'header'.
+            grid-area: header;
+
+'fit-content()' function:
+    It is used to set a minimum size of a row inside a grid but also makes sure to wrap the content inside the row.
+    Eg:
+        grid-template-rows: 3rem auto fit-content(9rem);
+Positioning Grid Items:
+    'justify-items' property:
+        It is used to position the item inside its spanning area horizontally.
+        It is applied on the Grid container itself.
+        Its default value is 'stretch'.
+        Eg:
+            justify-items: center;
+            justify-items: start;
+            justify-items: end;
+
+    'align-items' property:
+        It is used to position the item inside its spanning area vertically.
+        It is also applied to the grid container itself.
+        Its default value is 'stretch'.
+        Eg:
+            align-items: center;        
+            align-items: start;
+            align-items: end;
+
+Positioning Grid Content:
+    Sometimes, the grid items does not cover the whole grid container area.
+    To position the grid content with respect to the grid area, we use the following properties:
+        'justify-content' property:
+            It aligns the position of the content with respect to the x-axis.
+            Eg:
+                justify-content: center;
+                justify-content: start;
+                justify-content: end;
+        'align-content' property:
+            It aligns the position of the content with respect to the y-axis.
+            Eg:
+                align-content: center;
+                align-content: start;
+                align-content: end;
+
+Positioning Individual Grid Element:
+    We can also position individual grid element using the following properties:
+        'justify-self' property:
+            Used to align the item along the x-axis inside its spanning area.
+        'align-self' property:
+            Used to align the item along the y-axis inside its spanning area.
+
+'grid-auto-flow' property:
+    By default, Grid automatically adds rows to fit its items into the grid.
+    To change this behavior, i.e. to add dynamic columns instead of rows, we do the following:
+        grid-auto-flow: row;                // default
+        grid-auto-flow: column;
+        grid-auto-flow: column dense;       // this makes sure that there is no empty cell inside the grid.
+        grid-auto-flow: row dense;
+
+'grid-auto-rows' property:
+    It is used to set the size for dynamically created rows.
+    Eg:
+        grid-auto-rows: 5rem;
+
+'grid-auto-columns' property:
+    It is used to set the size for dynamically created columns.
+
+Dynamic columns and rows according to the content filling the viewport:
+    If we want to dynamically add rows if the content does not fit the viewport anymore, we can do the following:
+        grid-template-columns: repeat(auto-fill, 20rem);
+        This makes sure that after the viewport is full with the elements, a new row will be created dynamically
+                for the content.
+        Similarly, instead of 'auto-fill', we can use 'auto-fit', to get the same behavior but also to center the
+                grid items.
+
+
+# CSS Transforms
+
+'transform' property:
+    It is used to move the elements that are part of document flow.
+    It accepts certain functions as its value to move the elements.
+
+'rotate()' function:
+    It is used to rotate the element.
+    It rotates the element along the z-axis by default.
+    It accepts value in deg.
+    Eg:
+        transform: rotate(45deg);
+    There are functions like rotateY which rotates the element along the specified axis.
+    These functions can be used for 3D transformations.
+
+'translate()' function:
+    It is used to move the element along its x-axis.
+    When the element is rotated, its axises are also rotated.
+    It accepts values in terms of length units.
+    Eg:
+        transform: translate(1rem, 1rem);
+    Similarly, there are 'translateY', 'translateZ', etc.
+
+'skew()' function:
+    It is used to strech an image from its corner according to the defined axis.
+    It takes up values in deg.
+    Eg:
+        transform: skew(X, Y, Z);
+        There are different functions such as skewX etc.
+
+'scale()' function:
+    It is used to scale the element.
+    It accepts numerical values.
+    Eg:
+        transform: scale(1.4);
+        It scales along both x and y axis.
+        There are functions, such as scaleX etc to scale along a perticular axis.
+
+'perspective' property:
+    It is used to change the distance from which the object is viewed to the user.
+    It is applied to the container which has some transformed elements.
+    Eg:
+        perspective: 1000px;
+
+'perspective-origin' property:
+    It is used to set the origin point of the perspective.
+    Eg:
+        perspective-origin: 500px;
+
+'transform-origin' property:
+    It is used to set the origin/poing along which the rotation takes place.
+    Eg:
+        transform-origin: center;
+        transform-origin: 25% 50%;
+
+'transform-style' property:
+    It is used to change the display of the 3D effect of the transform function.
+    It has a value of 'flat' by default.
+    Eg:
+        transform-style: preserve-3d;
+
+'backface-visibility' property:
+    It is used to set the visibility of the back side of the transformed element.
+    Eg:
+        backface-visibility: hidden;
+        backface-visibility: visible;               // default
+
+
+# Transitions
+
+'opacity' property:
+    It is used to define the opacity of the element.
+    It accepts values between 0 and 1.
+    0 means transparent, 1 means full opacity.
+    Eg:
+        opacity: 1;
+        opacity: 0;
+
+'transition' property:
+    It is used to define the transitions for an element.
+    It accepts values in the following manner:
+        transition: [property] [duration] [delay] [timing-function], same for the second property;
+        [property] states that which property needs to be animated.
+        [duration] states the duration of animation.
+        [delay] states after how much time will the transition start.
+        [timing-function] states the behavior of animation at certain point during the animation.
+    Eg:
+        transition: opacity 200ms ease-out, transform 500ms ease-out;
+        'ease-out' states that the animation will be faster at its initiation and slower at its ending.
+        Similarly there are other values such as 'ease-in', etc.
+
+'cubic-bezier()' property:
+    This function provides the functionality to design custom timing functions.
+
+
+# Animations
+
+"@keyframes":
+    These are used to define the style of an element at a given point of time.
+    Eg:
+        @keyframes [customName] {
+            from {
+                properties...
+            }
+            to {
+                properties...
+            }
+        }
+    To add more keyframes, we can think of 'from': 0% and 'to': 100% and add more keyframes using a percentage value:
+        @keyframes [customName] {
+            0% {
+                properties...
+            }
+            50% {
+                properties...
+            }
+            100% {
+                properties...
+            }
+        }
+
+'animation' property:
+    This property is used to consume a keyframe on the element and define additional properties related to the
+            animation.
+    Eg:
+        animation: [customName] [duration] [delay] [iterate] [timing-function] [animation-style] [fill-state];
+        [customName] is the name assigned to the keyframe.
+        [duration] states the duration of the animation.
+        [delay] states the delay after which the animation is to be started.
+        [iterate] specifies the number of times the animation needs to be repeated.
+        [animation-style] specifies the style of animation.
+            We have certain predifined styles we can use for [animation-style]:
+                alternate
+                alternate-reverse
+                etc.
+        [fill-state] states the ending state of the element after the animation.
+            We have certain predifined fill-state values:
+                forwards: exits the animation with properties specified under 'to' statement.
+                backwards: exits the animation with properties specified under 'from' statement.
+                both: 
+
+Animation properties for 'addEventListner' function:
+    We can access the animation instants using the addEventListner function in our JavaScript file.
+    We have certain event keywords to do so.
+    Eg:
+        class.addEventListner('animationstart', function(event) { });
+        class.addEventListner('animationiteration', function(event) { });
+        class.addEventListner('animationend', function(event) { });
+
+
+# Writing Future Proof CSS Code
+
+CSS Variables:
+    We can assign variables to values that are reused in the document a lot.
+    Eg:
+        :root {
+            --var-name: any_value;
+        }
+        The variables are always defined inside the ':root' pseudo class.
+    Now to use the variable, we do the following:
+        color: var(--var-name, fallback-value);
+        fallback-value needs to be defined incase the specified variable does not exist or the browser does
+                not support assigning variables.
+
+"@supports()":
+    This query executes the code inside it only if the browser supports the code specified as the condition.
+    Eg:
+        @supports (display: grid) {
+            body {
+                ===
+            }
+        }
+
+
+# Syntactically Awesome Style Sheets (SASS/SCSS)
+
+SASS/SCSS provide a programatic way to type CSS code.
+It offers features like loops, statements, etc to simplify the CSS code.
+
+SASS does not work with '{ }' or ';', it uses indentations to understand what's inside its parent.
+SCSS on the other hand has the same working as CSS for '{ }' and ';'.
+
+SASS can be compiled to CSS using the 'sass' tool which is installed from gem library for mac.
+To install sass on mac, run:
+    $ sudo gem install sass
+
+It will install sass globally.
+
+Now to convert .sass code to .css, we do the following:
+    $ sass main.sass main.css
+    This will create 2 additional files:
+        main.css
+        main.css.map
+
+To enable sass watch mode, use the following:
+    $ sass --watch main.sass:main.css
+    This will automatically detect changes in the sass file and compile it to the css file.
+
+
+# SASS Features
+
+Nested Selectors:
+    We can use selectors nested inside another selector to address the child element of the parent selector.
+    Eg:
+        .class {
+            button {
+
+            }
+        }
+        This will refer to any button element inside the element which has the '.class' class.
+
+Nested Properties:
+    We can also nest properties.
+    Eg:
+        flex: {
+            direction: row;
+            wrap: nowrap
+        }
+        This will be equivalent to:
+            flex-direction: row;
+            flex-wrap: nowrap;
+
+Variables:
+    We can create variables in SASS.
+    They will be assigned as normal values to the properties where we use the variable, in the CSS file.
+    
+    To create variable, on the top of the document:
+        $varName: value;
+    
+    To use the variable:
+        color: $varName 
+
+    We can also create a list and assign it to a variable.
+    A list is a set of multiple values.
+    Eg:
+        $borderVar: 2px solid green;
+    
+    We can also create a map and assign it to a variable.
+    A map is similar to a dictionary in Python.
+    It is a set of key and value pairs.
+    To assign maps:
+        $mapname: (key1: value1, key2: value2);
+    To access the value of a map, we use map-get() function:
+        color: map-get($mapname, key2);
+
+SASS also comes with many built in functions.
+SASS also supports simple arithmatic operations (+, -, *, /) on dimentional values.
+
+Importing .sass/.scss file:
+    Importing is done in a better way in SASS.
+    We can define, so called, 'Partials', which is a .sass/.scss file which includes several sass code and
+            need to be seperated into a different file for the purpose of organizing code.
+    We can import this partial in the main sass file as:
+        @import "_partialName.sass"
+    Name of a partial file always starts with an underscore '_'.
+    When the sass code is compiled into css file, then the code inside a partial is included into the css file 
+            itself.
+    If we import a css file inside a sass file, it will have an import statement for the imported file in the
+            compiled css file.
+
+Advanced @media queries:
+    SASS allows us to use @media queries in a different way then CSS.
+    We can include the @media query inside the selector on which the @media query is to be applied.
+    And now, we do not need to specify the selector inside the media query.
+    Eg:
+        html {
+            font-size: 1px;
+            @media (min-width: 40rem) {
+                font-size: 0.5px;
+            }
+        }
+
+Inheritance:
+    We can inherit the SASS code defined for a selector into another selector.
+    Eg:
+        .className {
+            color: white;
+        }
+        .class2 {
+            @extend .className;
+        }
+        Here, '@extend' is used to call upon the .className class to include all its properties into the
+                .class2 class.
+
+Mixins:
+    We can define our custom functions in SASS using '@mixin' directive.
+    Eg:
+        @mixin custom-mixin() {
+            ___code___
+        }
+    To use this mixin, we do the following:
+        @include custom-mixin();
+    
+    We can also use @mixin to accepts arguments:
+        @mixin custom-mixin($arg) {
+            ___code___
+        }
+    
+    We can also use @mixin to take some additional code from where we use the mixin using @content directive:
+        @mixin custom-mixin() {
+            @content;
+        }
+        We call this mixin as follows:
+            @include custom-mixin() {
+                ___code___
+            }
+
+Addressing :pseudo classes:
+    Simply nesting a pseudo class inside a selector won't work.
+    It will treat it as a nested selector.
+    For pseudo classes or similarly attatched selectors to work, we do the following:
+        button {
+            &:hover {
+                ___code___
+            }
+        }
+        '&' tells SASS that we need to connect the following directly with the parent selector, not nest it
+                inside it.
+
+##################################################### E . N . D #####################################################

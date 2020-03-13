@@ -1,0 +1,186 @@
+Django
+Used for web development
+Use MVC design pattern (Model View Control)
+
+Controller: views.py
+Mapping: urls.py
+
+Cycle: Browser -> url -> view -> webpage -> Browser
+
+Initial WorkFlow:
+    Initials:
+        Terminal: django-admin startproject project_name       //start the project and create its files
+        Terminal: cd project_directory
+        Terminal: python3 manage.py runserever      //to start the server
+    views.py
+        Create a file named views.py inside 'BASE_DIR->project_name'
+        Open the required libraries and create required functions (actions)
+    urls.py
+        Now import views in url.py and create urls for actions
+        For templates, create a folder named templates in BASE_DIR. This folder will contain all the web pages or scripts.
+    settings.py
+        Go to settings.py to include templates folder in the project
+    templates
+        Work with the templates inside action definations in views.py
+        In a HTML file, within the form tag, specify the target function from views.py under the attribute action 
+        Modify the HTML and views.py relatively
+    Miscellneous
+        Change the TIME_ZONE to 'Asia/Kolkata' in settings.py
+        Errors can be checked live in the terminal/cmd
+
+views.py: 
+    This file is created manually.
+    This file contains all the functions (actions).
+    This file uses a function which can render url calls
+        from django.http import HttpResponse      //it is used to directly used to send HTML contents in its argument
+        from django.shortcuts import render     //it is used to render HTML files from templates folder
+    HttpResponse: this object is used to send the response to client in the form of text and html.
+    Syntax for a action defination:
+        def action_name(request):
+
+url.py:
+    First import your views.py as follows:
+        from . import views
+    This is used to call actions from views.py and map them. 
+    Inside urlpatterns, url path to all the actions are linked.
+    Syntax:
+        path('url/', views.action_name, name='<name>')
+        Here, <name> can be used when we need to set a link, for eg, in a <a href> tag.
+        To create the link between <a> tag and any specified url in the urls.py file, we need to use the following template tag:
+            {% url '<the name specified for the url in urls.py>' %}
+
+templates:
+    This folder is created manually.
+    It contains all the webpages and scripts which are to be rendered.
+    Inside the HTML file, under the form tag in its attribute action, link the function from views.py as below:
+        <form action = '/func_name'>
+
+Template Tags: Tags used in template files.
+    {{key_name}}: Used to access elements in dictionary rendered by the actions of views.py in the template file.
+    {% extends "base.html" %}: Used to extend the base html file , display the contents of this template in continuation of base.html.
+    {% block block_name %}, {% endblock %}: Used to reference content position of the extended template file.
+
+Adding other resources:
+    Create a folder named asset in BASE_DIR.
+    Go to settings.py and at the end of the file, add:
+    STATICFILES_DIRS = (                            //links the asset folder to static
+        os.path.join(BASE_DIR, "asset"),
+    )
+    Import the following in urls.py:
+        from django.contrib.staticfiles.urls import staticfiles_urlpatterns     //adds access to staticfiles to urlpatterns
+    Go at the end of urls.py, then add:
+        urlpatterns += staticfiles_urlpatterns()        //adds static file path to urlpatterns
+    
+    Inserting image in the template:
+        <img src="/static/1.jpg">
+    
+Session Buffer: 
+    It is a special memory area of buffer which is automatically created on client machine when user open a web browser.
+    This buffer is further used ny server to track the client information.
+    Information which is stored in session is shared in whole web application.
+Uploading a file to database:
+    -template should use POST method.
+    -{% csrf_token %} should be added after the starting form tag.
+    -<input type="file">        //to choose the file
+    
+    -Open file using file handling in wb mode.
+    -
+
+Creating an app in django
+    Syntax:
+        python3 manage.py startapp <appname>
+    On creating an app, a folder with appname is added in BASE_DIR.
+    It contains same files as in the project_name folder with additional app.py, models.py, tests.py, etc.
+    Specify the actions for the app in views.py.
+    To link them to a url, create urls.py in the app folder and import the following:
+        from django.contrib import admin
+        from django.urls import path
+    Now we can specify the urls for the app in this file.
+    To link these urls to the main project, goto the urls.py of the main project folder and import the following:
+        from django.urls import include
+        This is used to import all the content of the specified file as shown below.
+    Then  in the urlpatterns list, Enter the following:
+        path('', include('<appname>.urls')),
+        This will include all the urls specified in the urls.py file of the app folder into the urls.py file of the main project folder.
+    To add the app to the main project, do the following:
+        Go to the settings.py, under the INSTALLED_APPS list, add the app using the following syntax:
+            <appname>.apps.<appname>Config,
+
+
+Adding all the resource files to a specific folder:
+    We wanna keep all our resource files such as images, js, css etc files all in one folder, for that do the following:
+        Go to settings.py of the main project, scroll to the bottom, add the following lines:
+            STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+            STATICFILES_DIRS = [
+                os.path.join(BASE_DIR, 'btre/static')
+            ]
+        The first line defines the root for all the resource files of our project.
+        The second file specifies the location at which django need to search for all the resource files. Here we can add multiple locations.
+        To bring all the files stored at multiple locations specified in the STATICFILES_DIRS to the STATIC_ROOT specified folder, run the following command:
+            python3 manage.py collectstatic
+            This line collects all the files from the folders specified in STATICFILES_DIRS and copy them to the STATIC_ROOT folder.
+
+Configuring out project to work with postgres:
+    We should have postgres installed.
+    Goto settings.py of the project and in the DATABASES dictionary, modify the following:
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'btredb',
+        'USER': 'postgres',
+        'PASSWORD': '1234',
+        'HOST': 'localhost',
+    Details would be as per the database setup, this was just a demo.
+
+Models:
+    Models contains the definations for the columns which are to be created in a table.
+    They are formed in the models.py file which is present inside any app folder.
+    Models are created by defining a class, which is a subclass of 'models.Model', with the name of the table.
+    The strings defined in the class will be the column names in the table.
+
+Migrations:
+    Migrations are the files which help to make changes in the database.
+    In layman terms, the commits for the changes in the database are stored in the migrations file.
+    Django by default has some migration files ready for the admin and other stuff.
+    To push those commits, we need to run the following:
+        python3 manage.py migrate
+    Now define your models in the models.py of the app.
+    To make migrations, run the following command:
+        python3 manage.py makemigrations
+        This command will create a migration file inside migrations folder. The file would contain all the changes that are to be done to the database.
+    To show the sql query from the migration file, run the following command:
+        python3 manage.py sqlmigrate <appname> <migrationFileSerialNo>
+        eg: python3 manage.py sqlmigrate listings 0001
+
+Fetching from the database:
+    To fetch the data from a table:
+        Goto the views.py file of the app.
+        First, import the Model from which the data is to be fetched, using the following statement:
+            from .models import <modelName>
+        Now use the following to store the content in a variable:
+            var = modelName.objects.all()
+            This fetches a Query object which can be put in a dictionary and then the dictionary can be passed as an argument in the render function so we can use the contents of the fetched model using the template tags and a for loop in the template file.
+
+Creating a Super User for DjangoAdmin Functionality:
+    For this, we need to run the following command in the terminal:
+        python3 manage.py createsuperuser
+Registering the app for the admin area:
+    Goto admin.py file inside the app folder.
+    First import the model which is defiened in the models.py file for the app by using the following command:
+        from .models import <modelName>
+    To register the app for the admin, enter the following line:
+        admin.site.register(<modelName>)
+    When this done, we can now add data into the app model via the django admin.
+Modifying the admin section for an app:
+    This can be used to modify the content which the admin can view in the django admin area.
+    To do so:
+        Go to the admin.py file of the app.
+        Create a class with the name "<appname>Admin" with is a subclass of the class "admin.ModelAdmin".
+        Also pass the class name in the function "admin.site.register" as an argument.
+        In the defination of the class, we are going to check out some of the variables from the parent class which are going to be overwritten.
+            list_display: This is a tuple which contains the name of the columns which are to be displayed in the admin area.
+                Eg:     list_display = ('id', 'title', 'price')
+            list_display_links: In this tuple, we specify the column name from which we need to enable the link to open the complete detail form of the entry.
+            list_filter: In this tuple, we specify the name of the column by which we need to filter the visible data.
+                         When this variable is declared, it adds a filter section which displays all the options for the specified filter column.
+            list_editable: In this tuple, we can select which column can be edited right itself in the table where all the data is displayed.
+            search_fields: In this tuple, we can add all the columnnames that are to be used in search fields.
+            list_per_page: Here we can specify an integer which refers to the no. of items that are displayed on a page.

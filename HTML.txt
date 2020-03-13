@@ -1,0 +1,108 @@
+HTML: Hypertext Markup Language
+HT represents Rich text(Bold, Italic, Hyperlink, etc)
+
+<head>: this optional tag is used to prepare heading for a web page. Under this tag, one can use following tags:
+  <h1>, <h2>, ....<h6>:
+  <title>:
+<hr> (Horizontal Ruler)(contains no end tag): used to display a Horizontal line.
+  Attributes:
+    color = any color
+    width = n or n%
+    align = left, right or center
+<body>:
+  Attributes:   //Values of Attributes always in quotes
+    text = any color
+    bgcolor = any color
+    background = any image    //Display the image in the form of tile if the image is of smaller resolutions
+  <br> (break)(contains no end tag): move to next line
+  <p> (Paragraph):
+  <div>(division):
+<center>: to move elements in the center.
+<font>:
+  Attributes:
+    face = font_name
+    size = + or - n  (increment or decrement the size by n) //By default, size is 10
+    color = any color
+  <b>(bold):
+  <i>(italic):
+  <u>(underline):
+  <s>(strikethru):
+  <sup>(superscript):
+  <sub>(subscript):
+  <img>(image)(no closing tag):
+    Attributes:
+      src = image file
+      height = n or n%
+      width = n or n%
+      title = any text
+      dynsrc = video file   //does not work in chrome by default
+  <embed>: used to insert audios, videos and pdfs
+    Attributes:
+      src = url or file
+      width = n or n%
+      height = n or n%
+      playcount = n
+      autostart = true/False    //By default true
+  <a>: used to prepare Hyperlinks
+    Attributes:
+      href = url
+      target = window name ('_parent' or '_self' by default)    //used to open window in a new tab by using '_blank'
+  <iframe>(Internal Frame)(no closing tag): can be set as a target by the <a> tag to open its link in the iframe by specifing target of the <a> tag to iframe's name.
+    Attributes:
+      name = any name   //mandatary
+      frameborder = 0 or 1 (1 by default)
+      src = any url
+      width = n
+      height = n
+  <table>: it is used to arrange the information in rows and columns.
+    Attributes:
+      width = n or n%
+      border = 0 or 1
+      cellspacing = n   //space between 2 cells
+      cellpadding = n   //space inside a cell
+      text = any color
+      bgcolor = any color
+      background = any image
+    Under the table tag one can use following tags:
+      <caption>: heading of the table.
+      <tr>: represents row of the table. Under the <tr> tag, one can use <th> for table heading and <td> for table data
+        Attributes:
+          bgcolor = any color
+  <input>: it is used to prepare user interface.
+    Attributes:
+      type = text/password/radio/checkbox/hidden/button/submit/reset/file/time/date/date time/email/number/image
+      id = any id   //used for client side
+      name = any name   //used at server side
+      value = any value (mandatary in type = radio)
+      readonly = True/False
+      pattern = regular expressions
+      placeholder = any text    //default text inside the text box
+      checked (used in type = radio)
+      size = n
+    <textarea>: Used to take input for multiple lines of text.
+      Attributes:
+        name = any name
+        id = any id
+        value = any value
+        rows = n
+        cols = n
+    <select>: used to create a drop down menu or list box.
+      Attributes:
+        id = any id
+        name = any name
+        size (for list box only)= n
+        multiple (for list box only)
+      Under the <select> tag, one can use <option> tag to add items in list or dropdown menu.
+        Attributes:
+          value = any value
+          selected
+          
+    <form>: this tag is used to encapsulate the user interface in a single unit.
+      Attributes:
+        action = url
+          This Attribute move the control to specified url when user click on submit button.
+        method = get/post
+          get is used for small information, info visible on url
+          post is used for large content, info is not visible on url
+        name = anyname
+        
