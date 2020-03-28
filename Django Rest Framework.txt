@@ -1,0 +1,222 @@
+################################################# S . T . A . R . T #################################################
+
+Django REST Framework
+
+
+# Installation and Setup
+
+Installing 'djangorestframework' through pip:
+    $ pip install djangorestframework
+
+Include 'rest_framework' in 'INSTALLED_APPS' list in 'settings.py' file of the project.
+
+
+# Test modules included in rest_framework
+
+For testing our implemented code, we use the following modules from rest_framework to write out tests:
+    from rest_framework.test import APIClient
+    from rest_framework import status
+
+# Working Tree of our REST api:
+
+We take the following steps to implement a api endpoint:
+    Creating 'serializers.py'
+    Writing a view for our api endpoint in 'views.py'
+    Defining a url for our api endpoint
+
+
+# Serializers
+
+Serializers makes it easier to transform the data into formats such as json.
+Create a file named 'serializers.py' in the app folder.
+
+Importing Serializer class:
+    from rest_framework import serializers
+
+Serializer provides many type of class instances, such as Serializer, ModelSerializer, etc.
+A Serializer class in accordance with a model can be inherited using serializers.ModelSerializer class.
+With the inherited class, we include a Meta class with following variables:
+    model
+    fields
+    etc...
+
+Eg:
+    class UserSerializer(serializers.ModelSerializer):
+        """Serializer for the users object"""
+        class Meta:
+            model = get_user_model()
+            fields = ('first_name', 'middle_name', 'last_name', 'gender', 'mobile', 'username', 'email', 'password')
+            extra_kwargs = {'password': {'write_only': True, 'min_length': 5}}
+
+        def create(self, validated_data):
+            """Create a new user with encrypted password and return it"""
+            # return super().create(validated_data)
+            return get_user_model().objects.create_user(**validated_data)
+        
+        def to_representation(self, instance):
+            """Used to modify the serializer output"""
+            ret = super().to_representation(instance)
+            return ret
+
+    In the above example, we overwrite the create method according to our needs.
+    We can overwrite other methods too in a similar way.
+
+
+# Views
+
+REST Framework supports various types of views:
+    Function based views
+    Class based views
+    Generic Views
+    Viewsets
+
+Function based views:
+    We can define Function based views for our api endpoint using a function decorator '@api_view':
+        
+        """
+        from rest_framework.decorators import api_view
+
+        @api_view(['GET', 'POST'])
+        def hello_world(request):
+            if request.method == 'POST':
+                return Response({"message": "Got some data!", "data": request.data})
+            return Response({"message": "Hello, world!"})
+        """
+
+Class based views:
+    We can use predefined class based views using 'APIView':
+
+        """
+        class ListUsers(APIView):
+        """
+        View to list all users in the system.
+
+        * Requires token authentication.
+        * Only admin users are able to access this view.
+        """
+        authentication_classes = [authentication.TokenAuthentication]
+        permission_classes = [permissions.IsAdminUser]
+
+        def get(self, request, format=None):
+            """
+            Return a list of all users.
+            """
+            usernames = [user.username for user in User.objects.all()]
+            return Response(usernames)
+        """
+
+Generic Views:
+    These are basically class based views with additional functionality.
+    There are several types of generic views:
+        CreateAPIView
+        ListAPIView
+        RetrieveAPIView
+        DestroyAPIView
+        UpdateAPIView
+        ListCreateAPIView
+        RetrieveUpdateAPIView
+        RetrieveDestroyAPIView
+        RetrieveUpdateDestroyAPIView
+    
+    There are several methods provided by these views which can be overwritten:
+        get_queryset
+        get_object
+        filter_queryset
+        get_serializer_class
+        etc...
+
+Viewsets:
+    These provide even extra functionality then the generic view classes.
+    There are several types of viewsets:
+        ViewSet
+        GenericViewSet
+        ModelViewSet
+        ReadOnlyModelViewSet
+
+
+# Routers
+
+Routers help us with automatic url routing.
+It can only be used for viewsets.
+
+Usage:
+    """
+    urls.py
+
+    from rest_framework.routers import SimpleRouter
+
+    router = SimpleRouter()
+    router.register('url-path', viewset_name, [basename])
+
+    urlpatterns = router.urls
+
+    """
+
+There are few types of routers:
+    SimpleRouter
+    DefaultRouter
+
+    The only difference between them is that the DefaultRouter provides a root url which displays all the registered
+            urls with the router.
+
+
+# OAuth2
+
+OAuth2 is the most secure authentication standard used in the industry.
+
+We can implement OAuth2 authentication to our api endpoints.
+To implement OAuth2, we use the 'django-oauth-toolkit'.
+    $ pip install django-oauth-toolkit
+
+Include 'oauth2_provider' to INSTALLED_APPS:
+    """
+    INSTALLED_APPS = [
+        ...
+        'oauth2_provider',
+    ]
+    """
+
+Include this in settings.py:
+    """
+    OAUTH2_PROVIDER = {
+        # parses OAuth2 data from application/json requests
+        'OAUTH2_BACKEND_CLASS': 'oauth2_provider.oauth2_backends.JSONOAuthLibCore',
+        # this is the list of available scopes
+        'SCOPES': {'read': 'Read scope', 'write': 'Write scope', 'groups': 'Access to your groups'}
+    }
+    """
+
+Include 'OAuth2Authentication' in the DEFAULT_AUTHENTICATION_CLASSES property of REST_FRAMEWORK in settings.py:
+    """
+    REST_FRAMEWORK = {
+        'DEFAULT_AUTHENTICATION_CLASSES': (
+            'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+            'rest_framework.authentication.SessionAuthentication',
+        ),
+    }
+    """
+
+Define url for the OAuth2 authentication server:
+    """
+    urlpatterns = [
+        ...
+        path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
+    ]
+    """
+
+Now, we can register our application to get client_id and client_secret.
+    Goto 'localhost:8000/o/application' and click on 'create a new application'.
+    Give any name to the application.
+    Set client_type to confidential.
+    Set 'Authorization Grant Type' to 'password'.
+    Save the application.
+
+Now, to get an access_token, we need to perform an http request as stated below:
+    http <method> <url> grant_type="password" username="<username>" password="<password>"
+            client_id="<client_id>" client_secret="<client_secret>"
+
+We will get an access token with in the response if the provided credentials are correct.
+We can use the access_token with the requests to access the resource server by including the access_token in the header:
+    http <method> <url> "Authorization: Bearer <token>"
+
+##################################################### E . N . D #####################################################

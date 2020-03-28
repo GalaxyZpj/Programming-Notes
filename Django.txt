@@ -1,4 +1,7 @@
+################################################# S . T . A . R . T #################################################
+
 Django
+
 Used for web development
 Use MVC design pattern (Model View Control)
 
@@ -184,3 +187,113 @@ Modifying the admin section for an app:
             list_editable: In this tuple, we can select which column can be edited right itself in the table where all the data is displayed.
             search_fields: In this tuple, we can add all the columnnames that are to be used in search fields.
             list_per_page: Here we can specify an integer which refers to the no. of items that are displayed on a page.
+
+
+# Custom User Model
+
+We can completely customize the User model provide by django authentication system.
+
+Steps to customize the User model using 'AbstractBaseUser':
+    Execute the following imports in the models.py file of the app:
+        > from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+    Creating a Custom UserManager:
+        It must inherit BaseUserManager class.
+        It must have 2 functions:
+            create_user
+            create_superuser
+        Eg: >>
+            class UserManager(BaseUserManager):
+                """Custom user manager for custom user model"""
+                def create_user(self, username, email, password=None, **extra_fields):
+                    """Creates and saves a new user"""
+                    if not email:
+                        raise ValueError('Users must have an email address')
+                    user = self.model(username=username, email=self.normalize_email(email), **extra_fields)
+                    user.set_password(password)
+                    user.save(using=self._db)
+                    return user
+                
+                def create_superuser(self, username, email, password):
+                    """Creates and saves a superuser"""
+                    user = self.create_user(username=username, email=email, password=password)
+                    user.is_superuser = True
+                    user.is_staff = True
+                    user.save(using=self._db)
+                    return user
+
+    Creating a Custom User model:
+        It must inherit AbstractBaseUser.
+        Eg:>>
+            class User(AbstractBaseUser, PermissionsMixin):
+
+                ___FIELDS_DEFINATION___
+
+                objects = UserManager()
+
+                USERNAME_FIELD = 'username'
+                EMAIL_FIELD = 'email'
+
+        USERNAME_FIELD in the default User model is set to username.
+        We can change it to email or any other unique id by changing USERNAME_FIELD = '___any_unique_id___'
+    
+    Customize UserAdmin:
+        We need to customize the UserAdmin in order to display the users with respect to our custom user model.
+        Eg: >> admin.py
+
+            from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+            from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+            from django.utils.translation import gettext as _
+
+            class UserAdmin(BaseUserAdmin):
+                ordering = ['id']
+                list_display = ['username', 'email', 'mobile']
+                fieldsets = (
+                    (None, {
+                        "fields": (
+                            'username',
+                            'email',
+                            'mobile',
+                            'password',
+                        ),
+                    }),
+                    (_('Personal Info'), {
+                        "fields": (
+                            'first_name',
+                            'middle_name',
+                            'last_name',
+                            'gender',
+                            'dob',
+                        )
+                    }),
+                    (_('Permissions'), {
+                        "fields": (
+                            'is_active',
+                            'is_staff',
+                            'is_superuser',
+                            'is_verified',
+                        )
+                    }),
+                    (_('Important Dates'), {
+                        "fields": (
+                            'last_login',
+                        )
+                    })
+                )
+
+                add_fieldsets = (
+                    (None, {
+                        'classes': ('wide',),
+                        'fields': (
+                            'username',
+                            'email',
+                            'mobile',
+                            'password1',
+                            'password2',
+                        )
+                    }),
+                )
+                
+
+            admin.site.register(models.User, UserAdmin)
+
+##################################################### E . N . D #####################################################
