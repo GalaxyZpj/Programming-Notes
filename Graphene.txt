@@ -5,10 +5,11 @@ It is a Python library which is used to work with GraphQL in Python.
 
 
 # Basic working of Graphene
-GraphQL uses Schema Defination Language (SDL) to specify query for the data to be recieved form the api.
+GraphQL uses Schema Defination Language (SDL) to specify query for the data to be
+    recieved form the api.
 It allows us to specify what data we need in the response.
-We design a Query object which contains the fields for the query and resolver methods which are used to
-    resolve the data corresponding to the field.
+We design a Query object which contains the fields for the query and resolver
+    methods which are used to resolve the data corresponding to the field.
 
 
 # Type References in Graphene
@@ -25,10 +26,11 @@ Graphene has the following Type objects:
 
 # Schema
 A GraphQL Schema defines the types and relationship between Fields in your API.
-A Schema is created by supplying the root ObjectType of each operation, query (mandatory), mutation
-    and subscription.
+A Schema is created by supplying the root ObjectType of each operation,
+    query (mandatory), mutation and subscription.
 
-A Root Query is just a special ObjectType that defines the fields that are the entrypoint for your API.
+A Root Query is just a special ObjectType that defines the fields that are the
+    entrypoint for your API.
 Root Mutation and Root Subscription are similar to Root Query, but for different operation types:
     > Query fetches data
     > Mutation changes data and retrieves the changes
@@ -39,7 +41,8 @@ Root Mutation and Root Subscription are similar to Root Query, but for different
 Graphene accepts the field names in the query as camelCase by default.
 For eg:
     If a field name is 'last_name', then in the query, we need to specify it as 'lastName'.
-To override this autoCamelCasing behavior, we need to set a 'name' argument on the field constructor.
+To override this autoCamelCasing behavior, we need to set a 'name' argument on the
+    field constructor.
 Eg:
     last_name = graphene.String(name='last_name')
 If we need to completely disable the camelCasing, set auto_camelcase = False in the argument of
@@ -81,7 +84,8 @@ Eg:
         appears_in = graphene.List(graphene.String)
     This tells the api to return a list of string for appears_in field.
 
-NonNull is a type modifier which ensures that no null value is returned for the specified field.
+NonNull is a type modifier which ensures that no null value is returned for the
+    specified field.
 If a null is returned, it triggers a GraphQL execution error.
 Eg:
     import graphene
@@ -114,7 +118,9 @@ The resolve method should contain the following arguments:
         Gives access to per-request context which can be used to store user authentication,
             data loader instances or anything else useful for resolving the query.
     
-We can also declare Resolver methods outside the ObjectType class and use it on a field as follows:
+We can also declare Resolver methods outside the ObjectType class and use it on a 
+    field as follows:
+    
     def resolve_full_name(person, info):
         return f"{person.first_name} {person.last_name}"
     class Person(ObjectType):
@@ -124,8 +130,8 @@ We can also declare Resolver methods outside the ObjectType class and use it on 
 
 
 # Interfaces
-An Interface is an abstract type that defines a certain set of fields that a type must include to
-    implement the interface.
+An Interface is an abstract type that defines a certain set of fields that a type must
+    include to implement the interface.
 They are similar to an abstrat model in django.
 
 To resolve data objects (models in django) to types, we can add resolve_type @classmethod
@@ -223,6 +229,108 @@ To return an existing ObjectType instead of a mutation-specific type, set the Ou
 
         def mutate(root, info, name):
             return Person(name=name)
+
+
+
+# Graphene-Django
+A library which provides graphene integration for Django projects.
+
+
+# Setup
+> Installation:
+    $ pip install graphene-django
+
+> Add to INSTALLED_APPS:
+    INSTALLED_APPS = [
+        ...
+        graphene_django,
+    ]
+
+> 
+
+
+# Working
+
+We start off with creating a per app schema.py file and inside it, defining classes
+    which inherit DjangoObjectType.
+These classes are used to define the ObjectTypes for our GraphQL schema using the models.
+Eg:
+
+    from graphene_django.types import DjangoObjectType
+    from cookbook.ingredients.models import Category
+
+    class CategoryType(DjangoObjectType):
+        class Meta:
+            model = Category
+
+Then we define an app level Query object which have defined fields and resolvers for our
+    DjangoObjectTypes.
+Eg:
+    class Query(object):
+        all_categories = graphene.List(CategoryType)
+        def resolve_all_categories(self, info, **kwargs):
+            return Category.objects.all()
+
+    This class is a mixin which inherits 'object' as it will be later inherited by the
+        root Query class.
+
+Each app level Query class is a mixin which will be inherited by the root level Query
+    class along with the graphene.ObjectType.
+This root level Queery class will be defined in the root level schema.py.
+
+The root level Query class will be defined as:
+    import graphene
+
+    import cookbook.ingredients.schema
+
+    class Query(cookbook.ingredients.schema.Query, graphene.ObjectType):
+        # This class will inherit from multiple Queries
+        # as we begin to add more apps to our project
+        pass
+
+    schema = graphene.Schema(query=Query)
+
+Above, schema object is imported from graphene.Schema, which will take the Query class
+    as an argument.
+
+In settings.py, we need to specify the SCHEMA which will be used by our GraphQL layer.
+Add the following lines to settings.py:
+    
+    GRAPHENE = {
+        'SCHEMA': 'djangoProjectName.schema.schema'
+    }
+
+After all this, we need to set a view for our GraphQL layer.
+Graphene provides GraphQLView class which is the only view required for the GraphQL to work.
+Unline REST, GraphQL only needs a single endpoint to function.
+In root level urls.py:
+
+    from graphene_django.views import GraphQLView
+    urlpatterns = [
+        path('graphql', GraphQLView.as_view(graphiql=True)),
+    ]
+    
+    Here, graphiql is the tool which provides the functionality for browsable api.
+    To add graphiql to out endpoint, we simply set graphiql=True as an argument
+        for the GraphQLView.
+    We can also provide schema here as an argument instead of adding it in the settings.py:
+        path('graphql', GraphQLView.as_view(graphiql=True, schema=schema))
+
+These are all the basic steps involved in the setup of out GraphQL server.
+
+
+# Working Summary
+
+> Prepare Models
+> Create app level schema.py
+> Define DjangoObjectTypes and Query object mixin for the app
+> Create root level schema.py
+> Define root Query ObjectType which inherits app level Query mixins
+> Define a schema variable
+> Setup the schema in settings.py
+> Define the GraphQL url with the GraphQLView
+
+
 
 
 ##################################################### E . N . D #####################################################
