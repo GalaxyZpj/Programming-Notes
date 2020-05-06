@@ -1,0 +1,228 @@
+################################################# S . T . A . R . T #################################################
+
+# Graphene
+It is a Python library which is used to work with GraphQL in Python.
+
+
+# Basic working of Graphene
+GraphQL uses Schema Defination Language (SDL) to specify query for the data to be recieved form the api.
+It allows us to specify what data we need in the response.
+We design a Query object which contains the fields for the query and resolver methods which are used to
+    resolve the data corresponding to the field.
+
+
+# Type References in Graphene
+Graphene has the following Type objects:
+    > Schema
+    > Scalars
+    > List and NonNull
+    > ObjectType
+    > Enums
+    > Interfaces
+    > Unions
+    > Mutations
+
+
+# Schema
+A GraphQL Schema defines the types and relationship between Fields in your API.
+A Schema is created by supplying the root ObjectType of each operation, query (mandatory), mutation
+    and subscription.
+
+A Root Query is just a special ObjectType that defines the fields that are the entrypoint for your API.
+Root Mutation and Root Subscription are similar to Root Query, but for different operation types:
+    > Query fetches data
+    > Mutation changes data and retrieves the changes
+    > Subscription sends changes to clients in real time
+
+
+# Auto CamelCasing Field Names
+Graphene accepts the field names in the query as camelCase by default.
+For eg:
+    If a field name is 'last_name', then in the query, we need to specify it as 'lastName'.
+To override this autoCamelCasing behavior, we need to set a 'name' argument on the field constructor.
+Eg:
+    last_name = graphene.String(name='last_name')
+If we need to completely disable the camelCasing, set auto_camelcase = False in the argument of
+    Schema object.
+Eg:
+    my_schema = Schema(
+        query=MyRootQuery,
+        auto_camelcase=False,
+    )
+
+
+# Scalars
+Scalars in graphene are the basic data types to represent the type of data of a field.
+There are a few basic Scalars:
+    > graphene.String
+    > graphene.Int
+    > graphene.Float
+    > graphene.Boolean
+    > graphene.ID
+    > graphene.types.datetime.Date
+    > graphene.types.datetime.DateTime
+    > graphene.types.datetime.Time
+    > graphene.types.json.JSONString
+We can also define custom Scalars for our schema by inheriting the Scalar class imported
+    from "graphene.types".
+A custom schema must have the following static methods:
+    > serialize
+    > parse_literal
+    > parse_value
+
+
+# List and NonNull
+
+List is a type modifier for a Scalar.
+When used on a Scalar, it tells the api to return a list of specified Scalars
+Eg:
+    import graphene
+    class Character(graphene.ObjectType):
+        appears_in = graphene.List(graphene.String)
+    This tells the api to return a list of string for appears_in field.
+
+NonNull is a type modifier which ensures that no null value is returned for the specified field.
+If a null is returned, it triggers a GraphQL execution error.
+Eg:
+    import graphene
+    class Character(graphene.ObjectType):
+        name = graphene.NonNull(graphene.String)
+
+    It is same as adding required=True as an argument to the Scalar.
+
+The following example shows NonNull Lists:
+    import graphene
+    class Character(graphene.ObjectType):
+        appears_in = graphene.List(graphene.NonNull(graphene.String))
+
+
+# ObjectType
+A Graphene ObjectType is the building block used to define the relationship between Fields
+    in your Schema and how their data is retrieved.
+
+> Each ObjectType is a Python class that inherits from graphene.ObjectType.
+> Each attribute of the ObjectType represents a Field.
+> Each Field has a resolver method to fetch data (or Default Resolver).
+
+* Resolver method arguments:
+The resolve method should contain the following arguments:
+    > Parent Value Object (parent):
+        It contains the value object returned from the resolver of the parent field.
+        If there is no parent field, contains None
+    > GraphQL Execution Info (info):
+        Used to access the meta class attributes of the ObjectType
+        Gives access to per-request context which can be used to store user authentication,
+            data loader instances or anything else useful for resolving the query.
+    
+We can also declare Resolver methods outside the ObjectType class and use it on a field as follows:
+    def resolve_full_name(person, info):
+        return f"{person.first_name} {person.last_name}"
+    class Person(ObjectType):
+        first_name = String()
+        last_name = String()
+        full_name = String(resolver=resolve_full_name)
+
+
+# Interfaces
+An Interface is an abstract type that defines a certain set of fields that a type must include to
+    implement the interface.
+They are similar to an abstrat model in django.
+
+To resolve data objects (models in django) to types, we can add resolve_type @classmethod
+    to the interface.
+
+
+# Unions
+Unions are Python class which are inherited from 'graphene.Union'.
+Unions include multiple ObjectTypes. They do not have fields of their own.
+Eg:
+    import graphene
+
+    class Human(graphene.ObjectType):
+        name = graphene.String()
+        born_in = graphene.String()
+
+    class Droid(graphene.ObjectType):
+        name = graphene.String()
+        primary_function = graphene.String()
+
+    class Starship(graphene.ObjectType):
+        name = graphene.String()
+        length = graphene.Int()
+
+    class SearchResult(graphene.Union):
+        class Meta:
+            types = (Human, Droid, Starship)
+    
+    Querying SearchResult may return Human, Droid or Starship.
+
+
+# Mutations
+A Mutation is a special ObjectType that also defines an Input.
+They are used for write functionality.
+Eg:
+    class CreatePerson(graphene.Mutation):
+        class Arguments:
+            name = graphene.String()
+
+        ok = graphene.Boolean()
+        person = graphene.Field(lambda: Person)
+
+        def mutate(root, info, name):
+            person = Person(name=name)
+            ok = True
+            return CreatePerson(person=person, ok=ok)
+    
+    The Arguments class has all the input arguments which are to be accepted for a mutation.
+    'ok' and 'person' are the output fields.
+    mutate is a special resolver function used to manipulate data, which returns the
+        mutation class instance.
+
+* InputFields and InputObjectTypes
+InputObjectTypes is used to define the structure of the nested input data.
+Eg:
+    import graphene
+    class PersonInput(graphene.InputObjectType):
+        name = graphene.String(required=True)
+        age = graphene.Int(required=True)
+
+    class CreatePerson(graphene.Mutation):
+        class Arguments:
+            person_data = PersonInput(required=True)
+
+        person = graphene.Field(Person)
+
+        @staticmethod
+        def mutate(root, info, person_data=None):
+            person = Person(
+                name=person_data.name,
+                age=person_data.age
+            )
+            return CreatePerson(person=person)
+InputField is used to add InputObjectType as an input field on another InputObjectType.
+Eg:
+    import graphene
+    class LatLngInput(graphene.InputObjectType):
+        lat = graphene.Float()
+        lng = graphene.Float()
+
+    #A location has a latlng associated to it
+    class LocationInput(graphene.InputObjectType):
+        name = graphene.String()
+        latlng = graphene.InputField(LatLngInput)
+
+To return an existing ObjectType instead of a mutation-specific type, set the Output
+    attribute to the desired ObjectType:
+
+    import graphene
+    class CreatePerson(graphene.Mutation):
+        class Arguments:
+            name = graphene.String()
+
+        Output = Person
+
+        def mutate(root, info, name):
+            return Person(name=name)
+
+
+##################################################### E . N . D #####################################################
