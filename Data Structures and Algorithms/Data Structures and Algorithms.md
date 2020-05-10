@@ -1,5 +1,6 @@
 # Data Structures and Algorithms in Python
 
+**Points at a glance**
 > 2 bits is equal to 8 bytes.
 Python represents each Unicode character with 16 bits (2 bytes).
 
@@ -87,8 +88,85 @@ It shows that formation of list only consists of storing the memory addresses in
             - stores all the elements of ```self.array``` into the temporary array.
             - points ```self.array``` to the temperory double sized array.
             - changes the capacity of ```self.array```.
+        - ```make_array``` : returns a raw array with the specified size.
     - At first, it may seem like creating a double capacity array and then pushing all the elements of the current array into the temporary array may cost us performance. But it is not as it seem.
     - To judge the performance of the following operation, we use something called **Amortized Analysis**.
     - It states that: the **amortized cost** per operation for a sequence of n operations is the total cost of the operations divided by n.
     - For brief reference, see the illustration below:
         ![Screenshot 2020-05-09 at 7.53.13 AM](https://i.imgur.com/krDCI5K.png)
+---
+#### Algorithm Tricks
+
+- **Converting O(n^2) into O(n)**
+    - There are array problems which at first glance, seem like O(n), but can be reduced to O(n) by following a tracking approach for the elements using sets.
+    - We can have a set which stores the already visited elements into it.
+    - Then we can have a check that the next element we visit is present in the set or not.
+    - This just might be adequate to compare all the elements with each other in an array.
+    - Eg:
+        - **Problem:** Array Pair Sum
+        *Given an integer array, output all the unique  pairs that sum up to a specific value k.*
+        So the input:
+        ```pair_sum([1,3,2,2],4)```
+        would return 2 pairs:
+        ```(1,3), (2,2)```
+        - **Solution:**
+            ```python
+            def pair_sum(arr, k):
+
+                # Edge case check
+                if len(arr) < 2:
+                    return
+                
+                # Sets for Tracking
+                seen = set()
+                output = set()
+
+                for num in arr:
+                    target = k - num
+                    """
+                    Target is the number which when added to num,
+                    will give the result equals k. We add num to
+                    seen as using this, we can compare the further
+                    iterated nums with the previously inserted
+                    nums in the seen set. And if target is found
+                    in the seen set, it will be a num which was
+                    previously iterated in the array and that has
+                    been added previously to the seen set, and
+                    its sum with the current num will be equal
+                    to k.
+                    """
+                    if target not in seen:
+                        seen.add(num)   
+                    
+                    else:
+                        output.add( (min(num, target), max(num, target)) )
+                    
+                # python trick to print tuples as string
+                print('\n'.join(map(str, list(output))))
+            ```
+
+---
+
+# Keyword Search Snippet
+## Set
+- Implementation: Hash Table
+- Adding Item: O(1)
+- Searching Item: O(1)
+- Remove Item: O(1)
+- Get Item: O(1)
+- ###### All the worst cases are due to formation of linked list
+
+---
+
+# Libraries
+### Collections
+- It has various implementation of inbuilt datatypes of python.
+- #### Containers:
+    - **defaultDict( [type] )**
+        - An implementation for dictionary .
+        - Does not throw a key not found error.
+        - Assigns a defualt value to the key.
+
+---
+
+###### Author : GalaxyZpj
