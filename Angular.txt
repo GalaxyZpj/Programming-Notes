@@ -587,7 +587,7 @@
     Angular provides a better functionality to handle forms.
     Using FormModule:
         To use form module, go to app.module.ts file and do the following:
-            # import { FormModule } from '@angular/forms';
+            # import { FormsModule } from '@angular/forms';
             # @NgModule({
                   imports: [
                       FormsModule,
@@ -932,8 +932,42 @@
             It sends the request from the app to the server, and also capture the response recieved from the server.
             We can manipulate the response as shown above.
 
-->Storing and retrieving data on the file system of the browser:
+-Storing and retrieving data on the file system of the browser:
     # localStorage.setItem('userData', JSON.stringify(user));
     This stores the data of logged in user in the system fileSystem of the browser so that when we reload our app, we donot loose the data of the logged in user.
     # JSON.parse(localStorage.getItem('userData'));
     This retrieves the locally stored 'userData' value.
+
+-Create Dynamic Components:
+    Creating components dynamically means inserting the component into the DOM dynamically upon some action.
+    This can be done using 'ng-template' and resolving the component to be inserted into the DOM.
+    The steps are as follows:
+        Insert the <ng-template> tag in the template file where the component is to be inserted.
+        <ng-template> acts as a placeholder. Give it a reference variable so that it could be accessed
+            from the typescript file.
+        Now, we need to access the ViewContainerRef of <ng-template> to manupilation the DOM under
+            the <ng-template> tag. To do so:
+
+            ```
+            import { ViewChild, ViewContainerRef } from '@angular/core';
+            @ViewChild('refVariable', { read: ViewContainerRef }) container: ViewContainerRef;
+            ```
+
+            We can use the 'container' property to refer the ViewContainer of the <ng-template>.
+        To insert the component dynamically in the <ng-template>, we do the following:
+
+            ```
+            import { ComponentFactoryResolver, ViewContainerRef } from '@angular/core';
+            import { VarComponent } from '...';
+
+            constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
+
+            () => {
+                const componentFactory = this.componentFactoryResolver.resolveComponentFactory(VarComponent);       // used to resolve the component using the ComponentFactoryResolver
+                this.container.clear();     // used to clear the ViewContainer of <ng-template>
+                const componentRef = this.container.createComponent(componentFactory);      // used to create component using the componentFactory
+                (<VarComponent>componentRef.instance).propertyName = propertyValue;         // used to set any value that is accepted by the VarComponent
+            }
+            ```
+            
+            This will insert the component into the ViewContainer of the <ng-template>.
